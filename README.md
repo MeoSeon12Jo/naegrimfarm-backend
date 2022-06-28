@@ -55,7 +55,7 @@ AI가 사용자가 업로드한 사진을 유화처럼 만들어주는 프로그
 ## ⚙ DB 설계 ERD
 <a href="https://docs.google.com/spreadsheets/d/1VyaKVsYAZ8Ivdygo0slzDB_L7UPzKD8iukoSQhTrnCA/edit#gid=0">구글 시트 바로가기</a>  
 <br><br>
-![image](https://user-images.githubusercontent.com/104349901/176165543-46870c8d-e283-48c7-9ff0-bc31117d1e08.png)
+![image](https://user-images.githubusercontent.com/104349901/176180110-e427d664-8898-45e9-9faa-175b1fa96b12.png)
 <br><br><br>
 
 ## 📢 발표 영상
