@@ -1,6 +1,6 @@
 ## 🎇프로젝트 소개 
 ### 👉🏻 프로젝트 명 
-NAEGRIM FARM
+NAEGRIMFARM
 <br>
 ### 🎨 유화 제작 프로젝트
 AI가 사용자가 업로드한 사진을 유화처럼 만들어주는 프로그램입니다.
@@ -39,11 +39,11 @@ AI가 사용자가 업로드한 사진을 유화처럼 만들어주는 프로그
 <br><br><br>
 
 ## 🐲 배포 사이트  
-<a href="http://10taku.site/" target="_blank">NAEGRIM FARM 바로가기</a>  
+<a href="http://10taku.site/" target="_blank">NAEGRIMFARM 바로가기</a>  
 <br><br><br>
 
-## 📂 SA Notion
-<a href="https://www.notion.so/12-df4f63382fb146e69b3b5b96231bb792">SA 노션 바로가기</a>
+## 📂 Start Assignment
+<a href="https://www.notion.so/12-df4f63382fb146e69b3b5b96231bb792">노션 바로가기</a>
 <br><br>
 ## 🔨 개발 목업
 <a href="https://docs.google.com/presentation/d/1gHUnbiCwNDyiQTTE2TnFEPQqEvtkn4DOnUvnBNsYKAY/edit?usp=gmail_thread&ts=62ba824f">구글 슬라이드 바로가기</a>
