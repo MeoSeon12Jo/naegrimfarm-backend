@@ -49,7 +49,7 @@ AI가 사용자가 업로드한 사진을 유화처럼 만들어주는 프로그
 <a href="https://github.com/MeoSeon12Jo/naegrimfarm-backend/wiki/%F0%9F%8E%A8Mockup">목업 wiki 바로가기</a>
 <br><br>
 ## 📕 API 설계
-<a href="">구글 시트 바로가기</a>
+<a href="https://quixotic-wok-871.notion.site/d4d124149f7940289450b758ad83f173?v=cb365cd4d58a4fb28b01ced140e13be7">노션 바로가기</a>
 <br><br><br>
 
 ## ⚙ DB 설계 ERD
