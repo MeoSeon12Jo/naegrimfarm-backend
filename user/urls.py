@@ -12,8 +12,7 @@ urlpatterns = [
     path('', UserView.as_view()),
     path('login/', UserApiView.as_view()),
     path('logout/', UserApiView.as_view()),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/farm/token/', FarmTokenObtainPairView.as_view(), name='farm_token'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/farm/token/', FarmTokenObtainPairView.as_view(), name='sparta_token'),
     path('api/authonly/', OnlyAuthenticatedUserView.as_view()),
 ]
