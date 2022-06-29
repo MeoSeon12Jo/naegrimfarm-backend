@@ -4,7 +4,7 @@ from rest_framework import permissions
 from rest_framework import status
 from django.contrib.auth import login, logout, authenticate
 from user.serializers import UserSerializer
-from user.jwt_claim_serializer import SpartaTokenObtainPairSerializer
+from user.jwt_claim_serializer import FarmTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from user.models import User as UserModel
@@ -46,9 +46,9 @@ class UserView(APIView):
         return Response({"message": "회원 탈퇴 완료!"})
     
     
-class SpartaTokenObtainPairView(TokenObtainPairView):
+class FarmTokenObtainPairView(TokenObtainPairView):
     #serializer_class 변수에 커스터마이징 된 시리얼라이저를 넣어 준다!
-    serializer_class = SpartaTokenObtainPairSerializer
+    serializer_class = FarmTokenObtainPairSerializer
     
 #로그인/로그아웃 view
 class UserApiView(APIView):
