@@ -2,7 +2,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework import status
-from django.contrib.auth import login, logout, authenticate
 from user.serializers import UserSerializer
 from user.jwt_claim_serializer import FarmTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -19,7 +18,7 @@ class UserView(APIView):
         
         return Response(user_serializer.data, status=status.HTTP_200_OK)
     
-    #TODO 회원가입
+    #DONE 회원가입
     def post(self, request):
         user_serializer = UserSerializer(data=request.data, context={"request": request})
         
@@ -45,30 +44,10 @@ class UserView(APIView):
         user.delete()
         return Response({"message": "회원 탈퇴 완료!"})
     
-    
+#JWT 로그인
 class FarmTokenObtainPairView(TokenObtainPairView):
     #serializer_class 변수에 커스터마이징 된 시리얼라이저를 넣어 준다!
     serializer_class = FarmTokenObtainPairSerializer
-    
-#로그인/로그아웃 view
-class UserApiView(APIView):
-    
-    #DONE 로그인
-    def post(self, request):
-        email = request.data.get('email', '')
-        password = request.data.get('password', '')
-
-        user = authenticate(request, email=email, password=password)
-        if not user:
-            return Response({"error": "존재하지 않는 이메일이거나 패스워드가 일치하지 않습니다."}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        login(request, user)
-        return Response({"msg": "로그인에 성공했습니다."}, status=status.HTTP_200_OK)
-    
-    #DONE 로그아웃
-    def delete(self, request):
-        logout(request)
-        return Response({"msg": "로그아웃 되었습니다."}, status=status.HTTP_200_OK)
     
     
 # 인가된 사용자만 접근할 수 있는 View 생성
