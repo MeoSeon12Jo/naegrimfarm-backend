@@ -1,3 +1,4 @@
+from pkg_resources import require
 from rest_framework import serializers
 from user.models import User as UserModel
 from auction.models import Category as CategoryModel
@@ -6,6 +7,12 @@ from auction.models import Auction as AuctionModel
 
 
 class PaintingSerializer(serializers.ModelSerializer):
+
+    artist = serializers.SerializerMethodField()
+
+    def get_artist(self, obj):
+        artist = obj.artist.nickname
+        return artist
 
     class Meta:
         model = PaintingModel
