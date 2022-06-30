@@ -15,7 +15,7 @@ class Painting(models.Model):
     artist = models.ForeignKey(UserModel, verbose_name="원작자", on_delete=models.SET_NULL, null=True, related_name='artist_painting')
     owner = models.ForeignKey(UserModel, verbose_name="소유자", on_delete=models.CASCADE, related_name='owner_painting')
     title = models.CharField("제목", max_length=50)
-    description = models.TextField("설명", max_length=256)
+    description = models.TextField("설명", max_length=256, null=True)
     category = models.ForeignKey(Category, verbose_name="카테고리", on_delete=models.SET_NULL, null=True)
     image = models.FileField("이미지", upload_to='paintings/')
     is_auction = models.BooleanField("경매상태", default=True)
