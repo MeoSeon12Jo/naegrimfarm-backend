@@ -19,8 +19,8 @@ class PaintingSerializer(serializers.ModelSerializer):
         # fields = ["id", "title", "description", "image",
         # "is_auction", "artist", "owner", "category"]
         fields = "__all__"
-
-
+        
+        
 class UserSerializer(serializers.ModelSerializer):
     
     paintings_list = serializers.SerializerMethodField()
@@ -36,4 +36,18 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ["id", "email", "nickname", "point", "paintings_list"]
+        # fields = "__all__"
+
+
+class PaintingSerializer(serializers.ModelSerializer):
+    artist = UserSerializer()
+    owner = serializers.SerializerMethodField()
+
+    def get_owner(self, obj):
+        return obj.owner.nickname
+
+    class Meta:
+        model = PaintingModel
+        fields = ["id", "title", "description", "image",
+        "is_auction", "artist", "owner", "category"]
         # fields = "__all__"
