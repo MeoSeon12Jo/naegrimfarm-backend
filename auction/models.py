@@ -1,7 +1,6 @@
 from django.db import models
 from user.models import User as UserModel
 
-
 class Category(models.Model):
     name = models.CharField("이름", max_length=5)
 
@@ -26,7 +25,6 @@ class Painting(models.Model):
 
     def __str__(self):
         return f"[작품] id: {self.id} / 제목: {self.title} / 소유자: {self.owner.nickname}"
-
 
 class Auction(models.Model):
     start_bid = models.PositiveIntegerField("시작 입찰가")
