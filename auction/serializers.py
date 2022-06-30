@@ -4,6 +4,9 @@ from rest_framework import status
 
 from auction.models import Painting as PaintingModel
 from auction.models import Auction as AuctionModel
+from auction.models import AuctionComment as AuctionCommentModel
+
+from gallery.serializers import PaintingSerializer
 
 # class CommentSerializer(serializers.ModelSerializer):
 #     author = serializers.SerializerMethodField()
@@ -66,3 +69,23 @@ class AuctionSerializer(serializers.ModelSerializer):
     # class Meta:
     #     model = Auction
     #     fields = ("artist", "start_bid", "current_bid", "category", "")
+    
+    
+class AuctionCommentSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+    
+    def get_username(self, obj):
+        return obj.user.nickname
+    class Meta:
+        model = AuctionCommentModel
+        fields = ["username", "content", "created_at"]
+    
+class AuctionDetailSerializer(serializers.ModelSerializer):
+    painting = PaintingSerializer()
+    comments = AuctionCommentSerializer(many=True, source="auctioncomment_set")
+    
+    
+    class Meta:
+        model = AuctionModel
+        fields = ["id", "start_bid", "current_bid", "auction_start_date", 
+                  "auction_end_date", "bidder", "comments", "painting"]

@@ -1,3 +1,4 @@
+from zlib import DEF_BUF_SIZE
 from django.db import models
 from user.models import User as UserModel
 
@@ -39,3 +40,27 @@ class Auction(models.Model):
 
     def __str__(self):
         return f"[경매] id: {self.id} / 작품: {self.painting.title}"
+    
+    
+class AuctionComment(models.Model):
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    content = models.TextField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    
+    class Meta:
+        db_table = "auction_comments"
+        
+    def __str__(self):
+        return f"[경매댓글] 경매id: {self.auction} / 작성자: {self.user}"
+    
+    
+class BookMark(models.Model):
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    
+    class Meta:
+        db_table = "bookmarks"
+    
+    def __str__(self):
+        return f"[북마크] 유저: {self.user.nickname} / 옥션id: {self.auction}"
