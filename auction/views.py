@@ -92,7 +92,6 @@ class AuctionDetailView(APIView):
         이미지ok, 카테고리ok, 제목ok, 작품설명ok, 남은시간??, 마감날짜ok, 시작가격ok, 현재가격ok
         artist의 닉네임ok, artist의 다른작품3가지ok, 
         댓글(유저이름ok, 댓글내용ok, 언제달렸는지(몇분전)시간만 가져와짐.)
-        
         """
         auction = AuctionModel.objects.get(id=id)
         auction_serializer = AuctionDetailSerializer(auction).data
@@ -100,7 +99,7 @@ class AuctionDetailView(APIView):
         return Response(auction_serializer, status=status.HTTP_200_OK)
     
     #TODO 경매상세페이지 입찰
-    def post(self, request, id):
+    def put(self, request, id):
         """
         입찰기능, 인풋창 가격 입력받아서, 포인트차감, 
         auction current_bid에 가격 저장
@@ -109,5 +108,8 @@ class AuctionDetailView(APIView):
         validation 입찰 받은 가격이 current_bid보다 작다면 
         return 현재가보다 적은금액으로 입찰 하실 수 없습니다.
         """
+        user = request.user
+        auction = AuctionModel.objects.get(id=id)
         
+                
         return Response()
