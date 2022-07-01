@@ -25,7 +25,10 @@ from datetime import datetime, timedelta
 class AuctionSerializer(serializers.ModelSerializer):
     painting = PaintingSerializer()
     auction_end_date = serializers.SerializerMethodField()
+    start_bid = serializers.SerializerMethodField()
+    current_bid = serializers.SerializerMethodField()
 
+    # 마감까지 남은 시간 포맷팅
     def get_auction_end_date(self, obj):
         time_remaining = obj.auction_end_date - timezone.now()
         time_remaining = str(timedelta(seconds=time_remaining.seconds))
@@ -33,8 +36,15 @@ class AuctionSerializer(serializers.ModelSerializer):
         time_list.insert(1, "시간")
         time_list.insert(3, "분")
         time_list.insert(5, "초")
+        time_list = time_list[:4]
         return ' '.join(time_list)
+    
+    # 입찰가 포맷팅
+    def get_start_bid(self, obj):
+        return format(obj.start_bid, ',')
 
+    def get_current_bid(self, obj):
+        return format(int(obj.current_bid or 0), ',') # start_bid=None 이면 int값으로 변환
 
     class Meta:
         model = AuctionModel
