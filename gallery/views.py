@@ -12,6 +12,7 @@ class GalleryView(APIView):
     def get(self, request):
         users = UserModel.objects.filter(~Q(owner_painting=None))
         user_serializer = UserSerializer(users, many=True).data
+        user_serializer.sort(key=lambda x: -len(x['paintings_list']))
 
         return Response(user_serializer, status=status.HTTP_200_OK)
 
