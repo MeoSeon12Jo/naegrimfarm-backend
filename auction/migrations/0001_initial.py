@@ -73,6 +73,7 @@ class Migration(migrations.Migration):
                 'db_table': 'auctions',
             },
         ),
+        migrations.CreateModel(
 
             name='BookMark',
             fields=[
