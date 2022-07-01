@@ -19,6 +19,7 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
     
     def get_artist_paintings(self, obj):
         paintings = PaintingModel.objects.filter(artist=obj.artist.id).values()
+        print(paintings)
         painting_list = []
         for painting in paintings:
             if painting.get('is_auction') == True:
