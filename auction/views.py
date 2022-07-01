@@ -18,17 +18,19 @@ class AuctionView(APIView):
     def get(self, request):
         # 카테고리명 Query Parameter로 가져오기
         category_name = request.GET.get('category', None)
+
+        # 마감하지 않은 경매들 모두 가져오기
+        open_auctions =  AuctionModel.objects.filter(Q(auction_end_date__gt=timezone.now()))
       
         # 마감임박 경매 쿼리(마감 시간 < 1일)
-        closing_query = Q(auction_end_date__gt=timezone.now()) & Q(auction_end_date__lt=timezone.now()+timedelta(days=1))
-        closing_auctions = AuctionModel.objects.filter(closing_query).order_by('auction_end_date')
+        closing_query = Q(auction_end_date__lt=timezone.now()+timedelta(days=1))
 
-        # 인기 경매 쿼리
-        hot_auctions = AuctionModel.objects.all().order_by('-current_bid')
-    
         # 입찰 전 경매 쿼리
-        nobid_query = (Q(current_bid=None) | Q(bidder=None))
-        nobid_auctions = AuctionModel.objects.filter(nobid_query)
+        nobid_query = (Q(current_bid=None) & Q(bidder=None))
+
+        closing_auctions = open_auctions.filter(closing_query).order_by('auction_end_date')
+        hot_auctions = open_auctions.order_by('-current_bid')
+        nobid_auctions = open_auctions.filter(nobid_query)
 
         # 카테고리 버튼 누를시 카테고리 쿼리 추가
         if category_name:
@@ -36,11 +38,11 @@ class AuctionView(APIView):
             closing_query = closing_query.add((category_query), closing_query.AND)
             nobid_query = nobid_query.add((category_query), nobid_query.AND)
             
-            closing_auctions = AuctionModel.objects.filter(closing_query).order_by('auction_end_date')
-            hot_auctions = AuctionModel.objects.filter(category_query).order_by('-current_bid')
-            nobid_auctions = AuctionModel.objects.filter(nobid_query)
+            closing_auctions = open_auctions.filter(closing_query).order_by('auction_end_date')
+            hot_auctions = open_auctions.filter(category_query).order_by('-current_bid')
+            nobid_auctions = open_auctions.filter(nobid_query)
 
-        # 딕셔너리에 시이럴라이저 3개 담아주기    
+        # 딕셔너리에 시이럴라이저화된 데이터 담아주기    
         closing_auction_serializer = AuctionSerializer(closing_auctions, many=True, context={"request": request}).data
         hot_auction_serializer = AuctionSerializer(hot_auctions, many=True, context={"request": request}).data
         nobid_auction_serializer = AuctionSerializer(nobid_auctions, many=True, context={"request": request}).data
