@@ -55,6 +55,23 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+
+            name='Auction',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('start_bid', models.PositiveIntegerField(verbose_name='시작 입찰가')),
+                ('current_bid', models.PositiveIntegerField(blank=True, null=True, verbose_name='현재 입찰가')),
+                ('auction_start_date', models.DateTimeField(auto_now_add=True, verbose_name='경매 시작일')),
+                ('auction_end_date', models.DateTimeField(verbose_name='경매 종료일')),
+                ('bidder', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                ('painting', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auction.painting')),
+            ],
+            options={
+                'db_table': 'auctions',
+            },
+        ),
+        migrations.CreateModel(
+
             name='BookMark',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
