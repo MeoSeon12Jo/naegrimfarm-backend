@@ -2,11 +2,14 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework import status
 
-from auction.models import Painting as PaintingModel
+from gallery.serializers import PaintingSerializer
 from auction.models import Auction as AuctionModel
 from auction.models import AuctionComment as AuctionCommentModel
 
 from gallery.serializers import PaintingSerializer
+
+from django.utils import timezone
+from datetime import datetime, timedelta
 
 # class CommentSerializer(serializers.ModelSerializer):
 #     author = serializers.SerializerMethodField()
@@ -20,10 +23,23 @@ from gallery.serializers import PaintingSerializer
 
 
 class AuctionSerializer(serializers.ModelSerializer):
+    painting = PaintingSerializer()
+    auction_end_date = serializers.SerializerMethodField()
+
+    def get_auction_end_date(self, obj):
+        time_remaining = obj.auction_end_date - timezone.now()
+        time_remaining = str(timedelta(seconds=time_remaining.seconds))
+        time_list = time_remaining.split(":")
+        time_list.insert(1, "시간")
+        time_list.insert(3, "분")
+        time_list.insert(5, "초")
+        return ' '.join(time_list)
+
+
     class Meta:
         model = AuctionModel
-        fields = "__all__"
-
+        fields = ['id', 'start_bid', 'current_bid', 'auction_start_date', 
+                        'auction_end_date', 'bidder', 'painting']
 
 
 # class AuctionSerializer(serializers.ModelSerializer):
