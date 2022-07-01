@@ -21,7 +21,7 @@ class UserGalleryView(APIView):
     def get(self, request, nickname):
 
         user_id = UserModel.objects.get(nickname=nickname).id
-        paintings = PaintingModel.objects.filter(owner=user_id, is_auction=False)
-        painting_serizlizer = PaintingSerializer(paintings, many=True).data
+        paintings = PaintingModel.objects.filter(owner=user_id, is_auction=False).order_by('-auction__current_bid')
+        painting_serializer = PaintingSerializer(paintings, many=True).data
         
-        return Response(painting_serizlizer, status=status.HTTP_200_OK)
+        return Response(painting_serializer, status=status.HTTP_200_OK)
