@@ -6,7 +6,7 @@ from auction.models import Painting as PaintingModel
 from auction.models import Auction as AuctionModel
 
 
-class PaintingSerializer(serializers.ModelSerializer):
+class PaintingDetailSerializer(serializers.ModelSerializer):
 
     category_name = serializers.SerializerMethodField()
     artist_name = serializers.SerializerMethodField()
@@ -20,6 +20,7 @@ class PaintingSerializer(serializers.ModelSerializer):
     
     def get_artist_paintings(self, obj):
         paintings = PaintingModel.objects.filter(artist=obj.artist.id).values()
+        print(paintings)
         painting_list = []
         for painting in paintings:
             if painting.get('is_auction') == True:
@@ -29,7 +30,7 @@ class PaintingSerializer(serializers.ModelSerializer):
                 painting_dict = {"painting_id" : painting_id, "painting_image": painting_image}
                 
                 painting_list.append(painting_dict)
-   
+        
         return painting_list
         
     class Meta:
