@@ -8,19 +8,38 @@ from auction.models import Auction as AuctionModel
 
 class PaintingSerializer(serializers.ModelSerializer):
 
-    artist = serializers.SerializerMethodField()
-
-    def get_artist(self, obj):
-        artist = obj.artist.nickname
-        return artist
-
+    category_name = serializers.SerializerMethodField()
+    artist_name = serializers.SerializerMethodField()
+    artist_paintings = serializers.SerializerMethodField()
+    
+    def get_category_name(self, obj):
+        return obj.category.name
+    
+    def get_artist_name(self, obj):
+        return obj.artist.nickname
+    
+    def get_artist_paintings(self, obj):
+        paintings = PaintingModel.objects.filter(artist=obj.artist.id).values()
+        painting_list = []
+        for painting in paintings:
+            if painting.get('is_auction') == True:
+                painting_id = painting["id"]
+                painting_image = painting["image"]
+                
+                painting_dict = {"painting_id" : painting_id, "painting_image": painting_image}
+                
+                painting_list.append(painting_dict)
+   
+        return painting_list
+        
     class Meta:
         model = PaintingModel
-        # fields = ["id", "title", "description", "image",
-        # "is_auction", "artist", "owner", "category"]
-        fields = "__all__"
-        
-        
+        fields = ["id", "title", "description", "image",
+        "is_auction","artist", "artist_name", "owner", 
+        "category_name", "artist_paintings"]
+
+
+
 class UserSerializer(serializers.ModelSerializer):
     
     paintings_list = serializers.SerializerMethodField()
