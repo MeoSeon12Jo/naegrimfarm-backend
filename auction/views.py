@@ -5,12 +5,14 @@ from rest_framework import status
 
 from auction.serializers import AuctionDetailSerializer
 from auction.serializers import AuctionSerializer
+from auction.serializers import AuctionBidSerializer
 from auction.models import Auction as AuctionModel
 
 from django.db.models import Q
 
 from django.utils import timezone
 from datetime import datetime, timedelta
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class AuctionView(APIView):
     def get(self, request):
@@ -86,30 +88,45 @@ class AuctionView(APIView):
 
 class AuctionDetailView(APIView):
     
-    #TODO 경매상세페이지 정보
-    def get(self, request, id):
-        """
-        이미지ok, 카테고리ok, 제목ok, 작품설명ok, 남은시간??, 마감날짜ok, 시작가격ok, 현재가격ok
-        artist의 닉네임ok, artist의 다른작품3가지ok, 
-        댓글(유저이름ok, 댓글내용ok, 언제달렸는지(몇분전)시간만 가져와짐.)
-        """
-        auction = AuctionModel.objects.get(id=id)
-        auction_serializer = AuctionDetailSerializer(auction).data
-        
-        return Response(auction_serializer, status=status.HTTP_200_OK)
+    # permission_classes = [permissions.IsAuthenticated]
     
-    #TODO 경매상세페이지 입찰
+    # authentication_classes = [JWTAuthentication]
+    
+    #DONE 경매상세페이지 정보
+    def get(self, request, id):
+        auction = AuctionModel.objects.get(id=id)
+        
+        if auction.auction_end_date > timezone.now():
+            #마감날짜가 지나지 않았다면 데이터 전송
+            auction_serializer = AuctionDetailSerializer(auction)
+        
+            return Response(auction_serializer.data, status=status.HTTP_200_OK)
+        
+        return Response({"msg" : "옥션 마감 날짜가 지나서 조회가 불가능합니다."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    #DONE 경매상세페이지 입찰
     def put(self, request, id):
         """
-        입찰기능, 인풋창 가격 입력받아서, 포인트차감, 
-        auction current_bid에 가격 저장
-        기존입찰자(bidder)에게 포인트 반환
-        없다면 그대로 저장, bidder 교체
+        입찰기능, 인풋창 가격 입력받아서, 포인트차감,ok
+        auction current_bid에 가격 저장ok
+        기존입찰자(bidder)에게 포인트 반환ok
+        없다면 그대로 저장, bidder 교체ok
         validation 입찰 받은 가격이 current_bid보다 작다면 
-        return 현재가보다 적은금액으로 입찰 하실 수 없습니다.
+        return 현재가보다 적은금액으로 입찰 하실 수 없습니다.ok
         """
-        user = request.user
         auction = AuctionModel.objects.get(id=id)
         
+        auction_serializer = AuctionBidSerializer(auction, data=request.data, context={"request": request})
+        
+        if auction_serializer.is_valid():
+            auction_serializer.save()
+            
+            return Response({"msg": "입찰 성공!"}, status=status.HTTP_200_OK)
+        
+        return Response(auction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+    
+        
                 
-        return Response()
+        return Response({"message": "Put 메소드임"})
