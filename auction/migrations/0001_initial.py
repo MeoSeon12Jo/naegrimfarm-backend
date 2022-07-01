@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
                 'db_table': 'auctions',
             },
         ),
-
+        migrations.CreateModel(
             name='BookMark',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
