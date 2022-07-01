@@ -1,4 +1,3 @@
-from zlib import DEF_BUF_SIZE
 from django.db import models
 from user.models import User as UserModel
 
