@@ -87,25 +87,29 @@ class AuctionCommentSerializer(serializers.ModelSerializer):
     
     def get_create_time(self, obj):
         create_time = obj.created_at.replace(microsecond=0).isoformat()
-        time_list = create_time.split("+")[0]
+        # time_list = create_time.split("+")[0]
         
-        return time_list
+        return create_time
     
     def create(self, validated_data):
+        print(validated_data)
+        comment = AuctionCommentModel(**validated_data)
+        comment.save()
         
-        return
+        return comment
     
     def update(self, instance, validated_data):
         
-        return
-    
-    def delete(self, validated_data):
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
         
-        return
+        return instance
+    
     class Meta:
         model = AuctionCommentModel
-        fields = ["id", "username", "content", "created_at", "create_time"]
-        
+        fields = ["id","user", "auction", "username", "content", "created_at", "create_time"]
+
     
 class AuctionDetailSerializer(serializers.ModelSerializer):
     painting = PaintingDetailSerializer()
@@ -124,6 +128,7 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
     
     def get_time_left(self, obj):
         #timedelta형식의 시간을 원하는 형태로 바꾸는 로직
+        
         time_remaining = obj.auction_end_date - timezone.now()
         time_string = str(time_remaining)
         time_string = time_string.split(",")
@@ -156,9 +161,9 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
     
         
 class AuctionBidSerializer(serializers.ModelSerializer):
-    current_bid_price = serializers.SerializerMethodField()
+    current_bid_format = serializers.SerializerMethodField()
     
-    def get_current_bid_price(self, obj):
+    def get_current_bid_format(self, obj):
         return format(obj.current_bid, ',')
     
     
@@ -217,5 +222,5 @@ class AuctionBidSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = AuctionModel
-        fields = ["id","current_bid", "bidder", "current_bid_price"]
+        fields = ["id","current_bid", "bidder", "current_bid_format"]
         

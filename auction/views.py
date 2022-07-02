@@ -91,11 +91,11 @@ class AuctionCommentView(APIView):
     
     #TODO 댓글작성
     def post(self, request, id):
-        user = request.user.id
-        request.data["user"] = user
+        user = request.user
+        request.data["user"] = user.id
         auction = AuctionModel.objects.get(id=id)
-        comment_serializer = AuctionCommentSerializer(auction, data=request.data, context={"request": request})
-        
+        request.data["auction"] = auction.id
+        comment_serializer = AuctionCommentSerializer(data=request.data, context={"request": request})
         if comment_serializer.is_valid():
             comment_serializer.save()
             
@@ -126,7 +126,7 @@ class AuctionCommentView(APIView):
         return Response({"msg": "자신의 댓글만 삭제 가능합니다."}, status=status.HTTP_400_BAD_REQUEST)
     
     
-class BookmarkView(APIView):
+class BookMarkView(APIView):
     # permission_classes = [permissions.IsAuthenticated]
     # authentication_classes = [JWTAuthentication]
     
@@ -136,13 +136,13 @@ class BookmarkView(APIView):
         auction = AuctionModel.objects.get(id=id)
         
         try:
-            my_bookmark = BookMarkModel.objects.get(user=user, auction=auction)
+            my_bookmark = BookMarkModel.objects.get(user_id=user, auction_id=auction.id)
             my_bookmark.delete()
         except BookMarkModel.DoesNotExist:
-            my_bookmark = BookMarkModel(user=user, auction=auction)
+            my_bookmark = BookMarkModel(user_id=user, auction_id=auction.id)
             my_bookmark.save()
             
             return Response({"msg": "북마크에 저장되었습니다."})
-        return Response({"msg": "북마크 저장에 실패했습니다."})
+        return Response({"msg": "북마크에서 삭제 되었습니다."})
         
 
