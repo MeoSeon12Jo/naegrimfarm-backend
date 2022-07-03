@@ -18,14 +18,14 @@ class Painting(models.Model):
     class Meta:
         db_table = "paintings"
     def __str__(self):
-        return f"[작품] id: {self.id} / 제목: {self.title} / 소유자: {self.owner.nickname}"
+        return f"[작품] id: {self.id} / 제목: {self.title} / 소유자: {self.owner.nickname} / 원작자: {self.artist.nickname}"
     
 class Auction(models.Model):
     start_bid = models.PositiveIntegerField("시작 입찰가")
     current_bid = models.PositiveIntegerField("현재 입찰가", blank=True, null=True)
     auction_start_date = models.DateTimeField("경매 시작일", auto_now_add=True)
     auction_end_date = models.DateTimeField("경매 종료일")
-    painting = models.ForeignKey(Painting, on_delete=models.CASCADE)
+    painting = models.OneToOneField(Painting, on_delete=models.CASCADE)
     bidder = models.ForeignKey(UserModel, blank=True, on_delete=models.SET_NULL, null=True)
     class Meta:
         db_table = "auctions"
