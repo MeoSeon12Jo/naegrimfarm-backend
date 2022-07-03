@@ -12,6 +12,7 @@ class GalleryView(APIView):
     def get(self, request):
         users = UserModel.objects.filter(~Q(owner_painting=None))
         user_serializer = UserSerializer(users, many=True).data
+        user_serializer.sort(key=lambda x: -len(x['paintings_list']))
 
         return Response(user_serializer, status=status.HTTP_200_OK)
 
@@ -21,7 +22,7 @@ class UserGalleryView(APIView):
     def get(self, request, nickname):
 
         user_id = UserModel.objects.get(nickname=nickname).id
-        paintings = PaintingModel.objects.filter(owner=user_id, is_auction=False)
-        painting_serizlizer = PaintingSerializer(paintings, many=True).data
+        paintings = PaintingModel.objects.filter(owner=user_id, is_auction=False).order_by('-auction__current_bid')
+        painting_serializer = PaintingSerializer(paintings, many=True).data
         
-        return Response((nickname, painting_serizlizer), status=status.HTTP_200_OK)
+        return Response(painting_serializer, status=status.HTTP_200_OK)

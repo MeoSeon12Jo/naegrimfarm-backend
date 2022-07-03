@@ -1,4 +1,3 @@
-from pkg_resources import require
 from rest_framework import serializers
 from user.models import User as UserModel
 from auction.models import Category as CategoryModel
@@ -7,7 +6,6 @@ from auction.models import Auction as AuctionModel
 
 
 class PaintingDetailSerializer(serializers.ModelSerializer):
-
     category_name = serializers.SerializerMethodField()
     artist_name = serializers.SerializerMethodField()
     artist_paintings = serializers.SerializerMethodField()
@@ -20,7 +18,7 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
     
     def get_artist_paintings(self, obj):
         paintings = PaintingModel.objects.filter(artist=obj.artist.id).values()
-        print(paintings)
+        
         painting_list = []
         for painting in paintings:
             if painting.get('is_auction') == True:
@@ -30,15 +28,15 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
                 painting_dict = {"painting_id" : painting_id, "painting_image": painting_image}
                 
                 painting_list.append(painting_dict)
-        
+
         return painting_list
+
         
     class Meta:
         model = PaintingModel
         fields = ["id", "title", "description", "image",
         "is_auction","artist", "artist_name", "owner", 
-        "category_name", "artist_paintings"]
-
+        "category_name", "artist_paintings", "auction"]
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -56,18 +54,22 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ["id", "email", "nickname", "point", "paintings_list"]
-        # fields = "__all__"
 
 
 class PaintingSerializer(serializers.ModelSerializer):
     artist = UserSerializer()
     owner = serializers.SerializerMethodField()
+    auction = serializers.SerializerMethodField()
 
     def get_owner(self, obj):
         return obj.owner.nickname
 
+    def get_auction(self, obj):
+        auction = AuctionModel.objects.filter(painting=obj.id).values()
+
+        return auction
+
     class Meta:
         model = PaintingModel
         fields = ["id", "title", "description", "image",
-        "is_auction", "artist", "owner", "category"]
-        # fields = "__all__"
+        "is_auction", "artist", "owner", "category", "auction"]
