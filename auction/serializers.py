@@ -37,6 +37,11 @@ class AuctionSerializer(serializers.ModelSerializer):
     def get_current_bid(self, obj):
         return format(int(obj.current_bid or 0), ',') # start_bid=None 이면 int값으로 변환
 
+    def create(self, validated_data):
+        auction = AuctionCommentModel(**validated_data)
+        auction.save()
+        return auction
+
     class Meta:
         model = AuctionModel
         fields = ['id', 'start_bid', 'current_bid', 'auction_start_date', 

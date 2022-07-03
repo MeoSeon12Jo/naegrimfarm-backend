@@ -31,7 +31,11 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
 
         return painting_list
 
-        
+    def create(self, validated_data):
+        painting = PaintingModel(**validated_data)
+        painting.save()
+        return painting
+
     class Meta:
         model = PaintingModel
         fields = ["id", "title", "description", "image",
