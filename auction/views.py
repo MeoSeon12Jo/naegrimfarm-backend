@@ -56,6 +56,15 @@ class AuctionView(APIView):
         }
 
         return Response(auctions, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        user = request.user
+        request.data["user"] = user.id
+        auction_serializer = AuctionSerializer(data=request.data, context={"request": request})
+        if auction_serializer.is_valid():
+            auction_serializer.save()
+            return Response(auction_serializer.data, status=status.HTTP_200_OK)
+        return Response(auction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
 class AuctionDetailView(APIView):

@@ -7,8 +7,20 @@ from rest_framework import status
 from django.db.models import Q
 
 
+class PaintingView(APIView):
+
+    def post(self, request):
+        user = request.user
+        request.data["user"] = user.id
+        painting_serializer = PaintingSerializer(data=request.data, context={"request": request})
+        if painting_serializer.is_valid():
+            painting_serializer.save()
+            return Response(painting_serializer.data, status=status.HTTP_200_OK)
+        return Response(painting_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class GalleryView(APIView):
-    
+
     def get(self, request):
         users = UserModel.objects.filter(~Q(owner_painting=None))
         user_serializer = UserSerializer(users, many=True).data
@@ -20,9 +32,8 @@ class GalleryView(APIView):
 class UserGalleryView(APIView):
 
     def get(self, request, nickname):
-
         user_id = UserModel.objects.get(nickname=nickname).id
         paintings = PaintingModel.objects.filter(owner=user_id, is_auction=False).order_by('-auction__current_bid')
         painting_serializer = PaintingSerializer(paintings, many=True).data
-        
+
         return Response(painting_serializer, status=status.HTTP_200_OK)
