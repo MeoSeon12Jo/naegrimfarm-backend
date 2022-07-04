@@ -3,11 +3,14 @@ from rest_framework.response import Response
 from .serializers import UserSerializer, PaintingSerializer
 from auction.models import Painting as PaintingModel
 from user.models import User as UserModel
+from rest_framework import permissions
 from rest_framework import status
 from django.db.models import Q
 
 
 class PaintingView(APIView):
+    # permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
 
     def post(self, request):
         user = request.user
@@ -20,6 +23,7 @@ class PaintingView(APIView):
 
 
 class GalleryView(APIView):
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         users = UserModel.objects.filter(~Q(owner_painting=None))
@@ -30,6 +34,7 @@ class GalleryView(APIView):
 
 
 class UserGalleryView(APIView):
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, nickname):
         user_id = UserModel.objects.get(nickname=nickname).id
@@ -37,3 +42,13 @@ class UserGalleryView(APIView):
         painting_serializer = PaintingSerializer(paintings, many=True).data
 
         return Response(painting_serializer, status=status.HTTP_200_OK)
+    
+# class MyGalleryView(APIView):
+    
+#     def get(self, request):
+#         user = request.user.id
+#         user_id = UserModel.objects.get(id=user).id
+#         paintings = PaintingModel.objects.filter(owner=user_id, is_auction=False).order_by('-auction__current_bid')
+#         painting_serializer = PaintingSerializer(paintings, many=True).data
+
+#         return Response(painting_serializer, status=status.HTTP_200_OK)
