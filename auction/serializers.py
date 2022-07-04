@@ -144,7 +144,7 @@ class AuctionBidSerializer(serializers.ModelSerializer):
     current_bid_format = serializers.SerializerMethodField()
     
     def get_current_bid_format(self, obj):
-        return format(obj.start_bid, ',')
+        return format(obj.current_bid, ',')
     
     
     def validate(self, data):
