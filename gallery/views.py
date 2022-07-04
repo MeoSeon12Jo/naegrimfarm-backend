@@ -7,9 +7,9 @@ from user.models import User as UserModel
 from rest_framework import permissions
 from rest_framework import status
 from django.db.models import Q
+from deep_learning_with_images.main import Transform
 
 from django.utils import timezone
-
 
 class PaintingView(APIView):
     # permission_classes = [permissions.IsAuthenticated]
@@ -20,6 +20,8 @@ class PaintingView(APIView):
         request.data["user"] = user.id
         painting_serializer = PaintingSerializer(data=request.data, context={"request": request})
         if painting_serializer.is_valid():
+            painting_serializer['image']=Transform(painting_serializer['image'])
+            print(painting_serializer)
             painting_serializer.save()
             return Response(painting_serializer.data, status=status.HTTP_200_OK)
         return Response(painting_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
