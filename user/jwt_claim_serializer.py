@@ -10,9 +10,8 @@ class FarmTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         # 사용자 지정 클레임
-        token['id'] = user.id
+        token['nickname'] = user.nickname
         #로그인 하는 id를 넣어 커스텀 가능
-        token['email'] = user.email
         
         # +a 로 넣어서 커스텀 가능
 
