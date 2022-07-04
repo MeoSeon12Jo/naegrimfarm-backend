@@ -37,10 +37,11 @@ class GalleryView(APIView):
                 closed_auction.painting.is_auction = False
                 closed_auction.painting.save()
 
-        users = UserModel.objects.filter(~Q(owner_painting=None))
+        users = UserModel.objects.filter(~Q(owner_painting=None) & Q(owner_painting__is_auction=False)).distinct()
+        
         if users.count() != 0:
             user_serializer = UserSerializer(users, many=True).data
-            user_serializer.sort(key=lambda x: -len(x['paintings_list']))
+            user_serializer.sort(key=lambda x: -len(x['paintings_image']))
 
             return Response(user_serializer, status=status.HTTP_200_OK)
         else:

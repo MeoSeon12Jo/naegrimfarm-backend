@@ -14,7 +14,7 @@ class Painting(models.Model):
     title = models.CharField("제목", max_length=50)
     description = models.TextField("설명", max_length=256, null=True)
     category = models.ForeignKey(Category, verbose_name="카테고리", on_delete=models.SET_NULL, null=True)
-    image = models.FileField("이미지", upload_to='paintings/')
+    image = models.FileField("이미지", upload_to='media/')
     is_auction = models.BooleanField("경매상태", default=True)
     class Meta:
         db_table = "paintings"
