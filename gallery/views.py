@@ -23,10 +23,13 @@ class GalleryView(APIView):
 
     def get(self, request):
         users = UserModel.objects.filter(~Q(owner_painting=None))
-        user_serializer = UserSerializer(users, many=True).data
-        user_serializer.sort(key=lambda x: -len(x['paintings_list']))
+        if users.count() != 0:
+            user_serializer = UserSerializer(users, many=True).data
+            user_serializer.sort(key=lambda x: -len(x['paintings_list']))
 
-        return Response(user_serializer, status=status.HTTP_200_OK)
+            return Response(user_serializer, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserGalleryView(APIView):
@@ -37,3 +40,4 @@ class UserGalleryView(APIView):
         painting_serializer = PaintingSerializer(paintings, many=True).data
 
         return Response(painting_serializer, status=status.HTTP_200_OK)
+        
