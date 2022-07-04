@@ -26,4 +26,4 @@ class MyPageView(APIView):
                 'bookmarks': bookmarks
             }
             , status=status.HTTP_200_OK
-            )
+        )
