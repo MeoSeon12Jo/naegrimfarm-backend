@@ -57,9 +57,8 @@ class AuctionCommentSerializer(serializers.ModelSerializer):
         return obj.user.nickname
     
     def get_create_time(self, obj):
+        #JS에서 댓글 시간 표현방식 사용하기 위해 포멧
         create_time = obj.created_at.replace(microsecond=0).isoformat()
-        # time_list = create_time.split("+")[0]
-        
         return create_time
     
     def create(self, validated_data):

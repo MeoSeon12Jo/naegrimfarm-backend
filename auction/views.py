@@ -18,6 +18,9 @@ from datetime import datetime, timedelta
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class AuctionView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
     #DONE 경매리스트 정보
     def get(self, request):
         # 카테고리명 Query Parameter로 가져오기
@@ -61,8 +64,9 @@ class AuctionView(APIView):
 
 
 class AuctionDetailView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    #커스텀 퍼미션 필요
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     
     #DONE 경매상세페이지 정보
     def get(self, request, id):
@@ -91,8 +95,8 @@ class AuctionDetailView(APIView):
     
 
 class AuctionCommentView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     
     #DONE 댓글작성
     def post(self, request, id):
@@ -132,8 +136,8 @@ class AuctionCommentView(APIView):
     
     
 class BookMarkView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     
     #DONE 북마크추가/삭제
     def post(self, request, id):

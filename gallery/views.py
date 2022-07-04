@@ -4,6 +4,7 @@ from .serializers import UserSerializer, PaintingSerializer
 from auction.models import Painting as PaintingModel
 from auction.models import Auction as AuctionModel
 from user.models import User as UserModel
+from rest_framework import permissions
 from rest_framework import status
 from django.db.models import Q
 
@@ -11,6 +12,8 @@ from django.utils import timezone
 
 
 class PaintingView(APIView):
+    # permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
 
     def post(self, request):
         user = request.user
@@ -23,6 +26,7 @@ class PaintingView(APIView):
 
 
 class GalleryView(APIView):
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         closed_auctions = AuctionModel.objects.filter(Q(auction_end_date__lte=timezone.now()))
@@ -44,6 +48,7 @@ class GalleryView(APIView):
 
 
 class UserGalleryView(APIView):
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, nickname):
 
@@ -52,4 +57,4 @@ class UserGalleryView(APIView):
         painting_serializer = PaintingSerializer(paintings, many=True).data
 
         return Response(painting_serializer, status=status.HTTP_200_OK)
-        
+
