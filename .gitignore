@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,django,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,django,visualstudiocode
 
+### AWS ###
+IAM.txt
+naegrimfarm.pem
+
 ### Django ###
 *.log
 *.pot
