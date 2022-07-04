@@ -21,5 +21,5 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('gallery/', include('gallery.urls')),
     path('auction/', include('auction.urls')),
-
+    path('mypage/', include('mypage.urls')),
 ]
