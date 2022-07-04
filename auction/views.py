@@ -1,3 +1,4 @@
+from multiprocessing import context
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -73,14 +74,15 @@ class AuctionDetailView(APIView):
     
     #DONE 경매상세페이지 정보
     def get(self, request, id):
+        
         auction = AuctionModel.objects.get(id=id)
         
         if auction.auction_end_date > timezone.now():
             #마감날짜가 지나지 않았다면 데이터 전송
-            auction_serializer = AuctionDetailSerializer(auction)
+            auction_serializer = AuctionDetailSerializer(auction, context={"request": request})
         
             return Response(auction_serializer.data, status=status.HTTP_200_OK)
-        
+            
         return Response({"error" : "옥션 마감 날짜가 지나서 조회가 불가능합니다."}, status=status.HTTP_400_BAD_REQUEST)
     
     #DONE 경매상세페이지 입찰
@@ -100,7 +102,7 @@ class AuctionCommentView(APIView):
     # permission_classes = [permissions.IsAuthenticated]
     # authentication_classes = [JWTAuthentication]
     
-    #TODO 댓글작성
+    #DONE 댓글작성
     def post(self, request, id):
         user = request.user
         request.data["user"] = user.id
@@ -126,7 +128,7 @@ class AuctionCommentView(APIView):
             return Response(comment_serializer.data, status=status.HTTP_200_OK)
         return Response(comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    #TODO 댓글삭제
+    #DONE 댓글삭제
     def delete(self, request, id):
         user = request.user
         comment = AuctionCommentModel.objects.get(id=id)
@@ -141,7 +143,7 @@ class BookMarkView(APIView):
     # permission_classes = [permissions.IsAuthenticated]
     # authentication_classes = [JWTAuthentication]
     
-    #TODO 북마크추가/삭제
+    #DONE 북마크추가/삭제
     def post(self, request, id):
         user = request.user.id
         auction = AuctionModel.objects.get(id=id)

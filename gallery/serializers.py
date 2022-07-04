@@ -17,16 +17,17 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
         return obj.artist.nickname
     
     def get_artist_paintings(self, obj):
-        paintings = PaintingModel.objects.filter(artist=obj.artist.id).values()
+        #쿼리셋 리스트화 후 현재가 높은순 3개를 불러오는 로직
+        paintings = list(PaintingModel.objects.filter(artist=obj.artist.id).order_by('-auction__current_bid'))[:3]
         
         painting_list = []
         for painting in paintings:
-            if painting.get('is_auction') == True:
-                painting_id = painting["id"]
-                painting_image = painting["image"]
-                
-                painting_dict = {"painting_id" : painting_id, "painting_image": painting_image}
-                
+            auction = painting.auction.id
+            
+            if painting.is_auction == True:
+                    
+                painting_image = str(painting.image)
+                painting_dict = {"auction_id": auction, "painting_image": painting_image}
                 painting_list.append(painting_dict)
 
         return painting_list
@@ -40,7 +41,7 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
         model = PaintingModel
         fields = ["id", "title", "description", "image",
         "is_auction","artist", "artist_name", "owner", 
-        "category_name", "artist_paintings", "auction"]
+        "category_name", "artist_paintings"]
 
 
 class UserSerializer(serializers.ModelSerializer):
