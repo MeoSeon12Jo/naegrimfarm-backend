@@ -100,17 +100,18 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
 
     def get_time_left(self, obj):
         #timedelta형식의 시간을 원하는 형태로 바꾸는 로직
-        
         time_remaining = obj.auction_end_date - timezone.now()
         time_string = str(time_remaining)
+        print(time_string)
         
-        if 'days' not in time_string:
+        if 'day' not in time_string:
             time_string = '0 days, ' + time_string
         
         time_string = time_string.split(",")
         
         days = time_string[0]
         days = days[:-5]
+        
         
         times = time_string[1]
         times = times[1:]
@@ -123,14 +124,14 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
         
         return time_remaining
     
+    
     def get_end_date(self, obj):
         #datetime 을 JS에서 Date()메소드에서 사용 할 수 있는 형태로 변경
         end_time = str(obj.auction_end_date)
         time_list = end_time.split("+")[0]
-        end_date = time_list.split(" ")[1]
   
         
-        return end_date
+        return time_list
     
     def get_is_bookmark(self, obj):
         user = self.context.get("request").user
