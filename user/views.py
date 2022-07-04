@@ -10,13 +10,14 @@ from user.models import User as UserModel
 
 #회원 관련 view
 class UserView(APIView):
+    permission_classes = [permissions.AllowAny]
     
-    #TODO 회원정보 조회
-    def get(self, request):
-        user = request.user
-        user_serializer = UserSerializer(user, context={"request": request})
+    # #TODO 회원정보 조회
+    # def get(self, request):
+    #     user = request.user
+    #     user_serializer = UserSerializer(user, context={"request": request})
         
-        return Response(user_serializer.data, status=status.HTTP_200_OK)
+    #     return Response(user_serializer.data, status=status.HTTP_200_OK)
     
     #DONE 회원가입
     def post(self, request):
@@ -46,6 +47,7 @@ class UserView(APIView):
     
 #JWT 로그인
 class FarmTokenObtainPairView(TokenObtainPairView):
+    permission_classes = [permissions.AllowAny]
     #serializer_class 변수에 커스터마이징 된 시리얼라이저를 넣어 준다!
     serializer_class = FarmTokenObtainPairSerializer
     

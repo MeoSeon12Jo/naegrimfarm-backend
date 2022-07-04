@@ -57,9 +57,8 @@ class AuctionCommentSerializer(serializers.ModelSerializer):
         return obj.user.nickname
     
     def get_create_time(self, obj):
+        #JS에서 댓글 시간 표현방식 사용하기 위해 포멧
         create_time = obj.created_at.replace(microsecond=0).isoformat()
-        # time_list = create_time.split("+")[0]
-        
         return create_time
     
     def create(self, validated_data):
@@ -98,9 +97,9 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
     def get_current_bid(self, obj):
         return format(int(obj.current_bid or 0), ',')
     
+
     def get_time_left(self, obj):
         #timedelta형식의 시간을 원하는 형태로 바꾸는 로직
-        #TODO 송희님 수정하셈 이거..
         
         time_remaining = obj.auction_end_date - timezone.now()
         time_string = str(time_remaining)
@@ -121,15 +120,17 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
         minutes = times[1]
         
         time_remaining = f"{days}일 {hours}시간 {minutes}분"
-
+        
         return time_remaining
     
     def get_end_date(self, obj):
         #datetime 을 JS에서 Date()메소드에서 사용 할 수 있는 형태로 변경
         end_time = str(obj.auction_end_date)
         time_list = end_time.split("+")[0]
+        end_date = time_list.split(" ")[1]
+  
         
-        return time_list
+        return end_date
     
     def get_is_bookmark(self, obj):
         user = self.context.get("request").user
@@ -153,7 +154,7 @@ class AuctionBidSerializer(serializers.ModelSerializer):
     current_bid_format = serializers.SerializerMethodField()
     
     def get_current_bid_format(self, obj):
-        return format(obj.start_bid, ',')
+        return format(obj.current_bid, ',')
     
     
     def validate(self, data):
