@@ -1,0 +1,455 @@
+[
+{
+    "model": "user.user",
+    "fields": {
+        "last_login": "2022-06-30T10:57:25Z",
+        "email": "admin@naver.com",
+        "nickname": "admin",
+        "password": "pbkdf2_sha256$320000$wxR52AxqPnVB5ZaNsMOMIH$6ugW7145Zaw17fukkf1CHNaNpb3mazt4ICI5dxjgMG8=",
+        "point": 3000000,
+        "is_active": true,
+        "is_admin": true
+    }
+},
+{
+    "model": "user.user",
+    "fields": {
+        "last_login": null,
+        "email": "kyumin@naver.com",
+        "nickname": "kyumin",
+        "password": "pbkdf2_sha256$320000$APK6xHujWzTNi32kMery0J$2PWaf5id4MYCaWTwuZw4BBqTwYZ7/gCkvQbDyJUg8xQ=",
+        "point": 198100000,
+        "is_active": true,
+        "is_admin": false
+    }
+},
+{
+    "model": "user.user",
+    "fields": {
+        "last_login": null,
+        "email": "francis@naver.com",
+        "nickname": "francis",
+        "password": "pbkdf2_sha256$320000$Uy5hfsprz18P2Mz35wxrZb$DhBdCww0oV5LvzEfevaS6Dww5HXsbF3XbUwkixHsoao=",
+        "point": 197800000,
+        "is_active": true,
+        "is_admin": false
+    }
+},
+{
+    "model": "user.user",
+    "fields": {
+        "last_login": null,
+        "email": "songhee@naver.com",
+        "nickname": "songhee",
+        "password": "pbkdf2_sha256$320000$Vd28GkMTED4z34lEcKqzwc$jL3zXK5/hywVrz5v2/3s9QYSePMdjW5u/XeCnQGvveY=",
+        "point": 3000000,
+        "is_active": true,
+        "is_admin": false
+    }
+},
+{
+    "model": "user.user",
+    "fields": {
+        "last_login": null,
+        "email": "kawa2@naver.com",
+        "nickname": "kawa2",
+        "password": "pbkdf2_sha256$320000$4qgteKIdg9sWArlFF8Abs2$YIVjmfXVA/jiQBnv6cTlNBc7JwEps9n0MJiYDwon8Vg=",
+        "point": 3000000,
+        "is_active": true,
+        "is_admin": false
+    }
+},
+{
+    "model": "user.user",
+    "fields": {
+        "last_login": null,
+        "email": "test11@naver.com",
+        "nickname": "test11",
+        "password": "pbkdf2_sha256$320000$vKSCbR995BJc6a89HPhukh$6/ZMXyvyaDNqr4IEsFKoRa93WVUg+nU3MJdqT3x8hsQ=",
+        "point": 3000000,
+        "is_active": true,
+        "is_admin": false
+    }
+},
+{
+    "model": "user.user",
+    "fields": {
+        "last_login": null,
+        "email": "test112@naver.com",
+        "nickname": "fdsafdsa",
+        "password": "pbkdf2_sha256$320000$eH1DdL6JtRbCZzcsNxhbBi$9gIeU32uYHYcX+wjg6Zi8hOxgCWPjIjcD8Hmr6uUIog=",
+        "point": 3000000,
+        "is_active": true,
+        "is_admin": false
+    }
+},
+{
+    "model": "auction.category",
+    "pk": 1,
+    "fields": {
+        "name": "인물"
+    }
+},
+{
+    "model": "auction.category",
+    "pk": 2,
+    "fields": {
+        "name": "동물"
+    }
+},
+{
+    "model": "auction.category",
+    "pk": 3,
+    "fields": {
+        "name": "풍경"
+    }
+},
+{
+    "model": "auction.category",
+    "pk": 4,
+    "fields": {
+        "name": "사물"
+    }
+},
+{
+    "model": "auction.category",
+    "pk": 5,
+    "fields": {
+        "name": "기타"
+    }
+},
+{
+    "model": "auction.painting",
+    "pk": 1,
+    "fields": {
+        "artist": [
+            "kyumin@naver.com"
+        ],
+        "owner": [
+            "francis@naver.com"
+        ],
+        "title": "FirstPainting",
+        "description": "첫번째 페인팅이무니다.",
+        "category": 1,
+        "image": "paintings/머신러닝_3.png",
+        "is_auction": true
+    }
+},
+{
+    "model": "auction.painting",
+    "pk": 2,
+    "fields": {
+        "artist": [
+            "kyumin@naver.com"
+        ],
+        "owner": [
+            "kyumin@naver.com"
+        ],
+        "title": "두번째 kyumin작품",
+        "description": "이것도 작품이뉘~",
+        "category": 3,
+        "image": "paintings/에러노트.png",
+        "is_auction": true
+    }
+},
+{
+    "model": "auction.painting",
+    "pk": 3,
+    "fields": {
+        "artist": [
+            "kyumin@naver.com"
+        ],
+        "owner": [
+            "kyumin@naver.com"
+        ],
+        "title": "하나더 있어야쥐 kyumin",
+        "description": "kyumin의 세번째작품",
+        "category": 3,
+        "image": "paintings/머신2.png",
+        "is_auction": true
+    }
+},
+{
+    "model": "auction.painting",
+    "pk": 4,
+    "fields": {
+        "artist": [
+            "kyumin@naver.com"
+        ],
+        "owner": [
+            "kyumin@naver.com"
+        ],
+        "title": "하나더 올리고",
+        "description": "ㄹ13ㄱㄹ1ㅇㅁㄴ",
+        "category": 4,
+        "image": "paintings/til썸네일.jpeg",
+        "is_auction": false
+    }
+},
+{
+    "model": "auction.auction",
+    "pk": 1,
+    "fields": {
+        "start_bid": 2000000,
+        "current_bid": 8900000,
+        "auction_start_date": "2022-06-30T11:34:43.943Z",
+        "auction_end_date": "2022-07-07T21:00:00Z",
+        "painting": 1,
+        "bidder": [
+            "kyumin@naver.com"
+        ]
+    }
+},
+{
+    "model": "auction.auction",
+    "pk": 2,
+    "fields": {
+        "start_bid": 100000,
+        "current_bid": 1600000,
+        "auction_start_date": "2022-07-01T04:31:27.965Z",
+        "auction_end_date": "2022-07-12T04:31:03Z",
+        "painting": 3,
+        "bidder": [
+            "francis@naver.com"
+        ]
+    }
+},
+{
+    "model": "auction.auction",
+    "pk": 4,
+    "fields": {
+        "start_bid": 100000,
+        "current_bid": 700000,
+        "auction_start_date": "2022-07-03T14:10:09.929Z",
+        "auction_end_date": "2022-07-21T14:09:52Z",
+        "painting": 2,
+        "bidder": [
+            "kyumin@naver.com"
+        ]
+    }
+},
+{
+    "model": "auction.auction",
+    "pk": 5,
+    "fields": {
+        "start_bid": 100000,
+        "current_bid": 600000,
+        "auction_start_date": "2022-07-03T14:11:00.973Z",
+        "auction_end_date": "2022-07-04T01:21:00Z",
+        "painting": 4,
+        "bidder": [
+            "francis@naver.com"
+        ]
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 2,
+    "fields": {
+        "user": [
+            "songhee@naver.com"
+        ],
+        "content": "나도나도",
+        "created_at": "2022-06-30T11:38:11.257Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 3,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "댓글을 달아보아용11",
+        "created_at": "2022-07-02T13:18:08.548Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 4,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "댓글을 달아보아용1122",
+        "created_at": "2022-07-02T13:37:59.448Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 5,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "댓글 제발 잘달리니?",
+        "created_at": "2022-07-02T13:47:22.249Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 6,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "한방에 했다 ㅋㅋ",
+        "created_at": "2022-07-02T13:47:33.145Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 7,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "순서 바꾸는거 prepend로 한방에 성공 ㅋㅋ",
+        "created_at": "2022-07-02T13:54:16.370Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 8,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "시간도 이상했던거 +로 분리했던거 백엔드에서 분리안하니까 제대로나옴",
+        "created_at": "2022-07-02T13:54:55.914Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 20,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "비동기쓰",
+        "created_at": "2022-07-03T13:16:50.414Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 21,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "비동기스",
+        "created_at": "2022-07-03T13:17:52.983Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 22,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "댓글을 달아보아용1122",
+        "created_at": "2022-07-03T13:18:19.833Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 23,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "댓글테스트",
+        "created_at": "2022-07-03T13:18:43.383Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 26,
+    "fields": {
+        "user": [
+            "francis@naver.com"
+        ],
+        "content": "댓글",
+        "created_at": "2022-07-03T16:23:43.129Z",
+        "auction": 4
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 34,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "입찰하지마세요 내꺼임",
+        "created_at": "2022-07-04T01:15:39.264Z",
+        "auction": 5
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 35,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "eeee",
+        "created_at": "2022-07-04T01:48:46.012Z",
+        "auction": 4
+    }
+},
+{
+    "model": "auction.auctioncomment",
+    "pk": 36,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "content": "댓글을 달아보아용1122",
+        "created_at": "2022-07-04T03:23:14.128Z",
+        "auction": 1
+    }
+},
+{
+    "model": "auction.bookmark",
+    "pk": 30,
+    "fields": {
+        "user": [
+            "francis@naver.com"
+        ],
+        "auction": 2
+    }
+},
+{
+    "model": "auction.bookmark",
+    "pk": 34,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "auction": 2
+    }
+},
+{
+    "model": "auction.bookmark",
+    "pk": 36,
+    "fields": {
+        "user": [
+            "kyumin@naver.com"
+        ],
+        "auction": 5
+    }
+}
+]
