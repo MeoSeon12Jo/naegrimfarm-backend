@@ -1,3 +1,4 @@
+from django import urls
 from rest_framework import serializers
 from user.models import User as UserModel
 from auction.models import Category as CategoryModel
@@ -18,16 +19,14 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
     
     def get_artist_paintings(self, obj):
         #쿼리셋 리스트화 후 현재가 높은순 3개를 불러오는 로직
-        paintings = list(PaintingModel.objects.filter(artist=obj.artist.id).order_by('-auction__current_bid'))[:3]
+        paintings = PaintingModel.objects.filter(artist=obj.artist.id).order_by('-auction__current_bid')[:3]
         
         painting_list = []
         for painting in paintings:
             auction = painting.auction.id
             
             if painting.is_auction == True:
-                    
-                painting_image = str(painting.image)
-                painting_dict = {"auction_id": auction, "painting_image": painting_image}
+                painting_dict = {"auction_id": auction, "painting_image": painting.image.url}
                 painting_list.append(painting_dict)
 
         return painting_list
@@ -46,19 +45,31 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     
-    paintings_list = serializers.SerializerMethodField()
+    # paintings_list = serializers.SerializerMethodField()
+    paintings_image = serializers.SerializerMethodField()
 
-    def get_paintings_list(self, obj):
-        paintings_set = PaintingModel.objects.filter(owner=obj.id).values()
+    # def get_paintings_list(self, obj):
+    #     paintings_set = PaintingModel.objects.filter(owner=obj.id).values()
+    #     # print(paintings_set)
+    #     paintings_list = []
+    #     for paintings in paintings_set:
+    #         if paintings.get('is_auction') == False:
+    #             paintings_list.append(paintings)
+    #     return paintings_list
+    
+    def get_paintings_image(self, obj):
+        paintings_set = PaintingModel.objects.filter(owner=obj.id)
         paintings_list = []
         for paintings in paintings_set:
-            if paintings.get('is_auction') == False:
-                paintings_list.append(paintings)
+            if paintings.is_auction == False:
+                painting_dict = {"image": paintings.image.url}
+                paintings_list.append(painting_dict) 
+        
         return paintings_list
 
     class Meta:
         model = UserModel
-        fields = ["id", "email", "nickname", "point", "paintings_list"]
+        fields = ["id", "email", "nickname", "point", "paintings_image"]
 
 
 class PaintingSerializer(serializers.ModelSerializer):
