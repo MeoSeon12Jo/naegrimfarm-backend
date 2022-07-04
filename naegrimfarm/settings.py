@@ -89,7 +89,11 @@ CORS_ALLOW_HEADERS = [
     "access-control-allow-origin"
 ]
 
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:5500']
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:5500',
+    'http://127.0.0.1:5555',
+
+    ]
 
 ROOT_URLCONF = 'naegrimfarm.urls'
 
