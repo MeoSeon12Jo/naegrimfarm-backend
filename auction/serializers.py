@@ -52,6 +52,7 @@ class AuctionSerializer(serializers.ModelSerializer):
 class AuctionCommentSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
     create_time = serializers.SerializerMethodField()
+    user_point = serializers.SerializerMethodField()
     
     def get_username(self, obj):
         return obj.user.nickname
@@ -60,6 +61,10 @@ class AuctionCommentSerializer(serializers.ModelSerializer):
         #JS에서 댓글 시간 표현방식 사용하기 위해 포멧
         create_time = obj.created_at.replace(microsecond=0).isoformat()
         return create_time
+    
+    def get_user_point(self, obj):
+        user = self.context.get("request").user
+        return format(int(user.point or 0), ',')
     
     def create(self, validated_data):
         comment = AuctionCommentModel(**validated_data)
@@ -77,7 +82,7 @@ class AuctionCommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = AuctionCommentModel
-        fields = ["id","user", "auction", "username", "content", "created_at", "create_time"]
+        fields = ["id","user", "auction", "username", "content", "created_at", "create_time", "user_point"]
 
     
 class AuctionDetailSerializer(serializers.ModelSerializer):
@@ -89,6 +94,7 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
     end_date = serializers.SerializerMethodField()
     is_bookmark = serializers.SerializerMethodField()
     request_username = serializers.SerializerMethodField()
+    user_point = serializers.SerializerMethodField()
     
     def get_start_bid(self, obj):
         #포맷 메소드로 숫자를 , 로 분리!
@@ -144,18 +150,27 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
     def get_request_username(self, obj):
         user = self.context.get("request").user
         return user.nickname
+    
+    def get_user_point(self, obj):
+        user = self.context.get("request").user
+        return format(int(user.point or 0), ',')
      
     class Meta:
         model = AuctionModel
         fields = ["id","request_username", "start_bid", "current_bid", "time_left",
-                  "end_date", "bidder", "comments", "painting", "is_bookmark"]
+                  "end_date", "bidder", "comments", "painting", "is_bookmark", "user_point"]
     
         
 class AuctionBidSerializer(serializers.ModelSerializer):
     current_bid_format = serializers.SerializerMethodField()
+    user_point = serializers.SerializerMethodField()
     
     def get_current_bid_format(self, obj):
         return format(obj.current_bid, ',')
+    
+    def get_user_point(self, obj):
+        user = self.context.get("request").user
+        return format(int(user.point or 0), ',')
     
     
     def validate(self, data):
@@ -213,5 +228,5 @@ class AuctionBidSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = AuctionModel
-        fields = ["id","current_bid", "bidder", "current_bid_format"]
+        fields = ["id","current_bid", "bidder", "current_bid_format", "user_point"]
         
