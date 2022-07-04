@@ -18,6 +18,10 @@ from datetime import datetime, timedelta
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class AuctionView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    #DONE 경매리스트 정보
     def get(self, request):
         # 카테고리명 Query Parameter로 가져오기
         category_name = request.GET.get('category', None)
@@ -58,19 +62,11 @@ class AuctionView(APIView):
 
         return Response(auctions, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        user = request.user
-        request.data["user"] = user.id
-        auction_serializer = AuctionSerializer(data=request.data, context={"request": request})
-        if auction_serializer.is_valid():
-            auction_serializer.save()
-            return Response(auction_serializer.data, status=status.HTTP_200_OK)
-        return Response(auction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
 
 class AuctionDetailView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    #커스텀 퍼미션 필요
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     
     #DONE 경매상세페이지 정보
     def get(self, request, id):
@@ -99,8 +95,8 @@ class AuctionDetailView(APIView):
     
 
 class AuctionCommentView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     
     #DONE 댓글작성
     def post(self, request, id):
@@ -140,8 +136,8 @@ class AuctionCommentView(APIView):
     
     
 class BookMarkView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     
     #DONE 북마크추가/삭제
     def post(self, request, id):
@@ -157,5 +153,3 @@ class BookMarkView(APIView):
             
             return Response({"msg": "북마크에 저장되었습니다."})
         return Response({"msg": "북마크에서 삭제 되었습니다."})
-        
-
