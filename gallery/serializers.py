@@ -71,15 +71,13 @@ class PaintingSerializer(serializers.ModelSerializer):
 
     def get_auction(self, obj):
         auction = AuctionModel.objects.filter(painting=obj.id).values()
-
         return auction
-
+        
     def create(self, validated_data):
         painting = PaintingModel(**validated_data)
         painting.save()
 
         return painting
-
 
     class Meta:
         model = PaintingModel
