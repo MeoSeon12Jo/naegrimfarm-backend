@@ -146,6 +146,10 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
         
         time_remaining = obj.auction_end_date - timezone.now()
         time_string = str(time_remaining)
+        
+        if 'days' not in time_string:
+            time_string = '0 days, ' + time_string
+        
         time_string = time_string.split(",")
         
         days = time_string[0]
