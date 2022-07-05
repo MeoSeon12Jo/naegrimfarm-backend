@@ -74,7 +74,7 @@ class PaintingView(APIView):
         painting_dict = model_to_dict(create_paintings)
         painting_dict['image'] = painting_dict['image'].url
         return Response(painting_dict, status=status.HTTP_200_OK)
-        return Response(painting_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class GalleryView(APIView):
