@@ -23,9 +23,9 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
         
         painting_list = []
         for painting in paintings:
-            auction = painting.auction.id
             
             if painting.is_auction == True:
+                auction = painting.auction.id
                 painting_dict = {"auction_id": auction, "painting_image": painting.image.url}
                 painting_list.append(painting_dict)
 
