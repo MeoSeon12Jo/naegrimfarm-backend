@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import local_settings
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -150,7 +150,7 @@ TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -162,10 +162,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
 
 AUTH_USER_MODEL = 'user.User'
 
@@ -194,3 +190,17 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = local_settings.SIMPLE_JWT
+
+
+DEFAULT_FILE_STORAGE = local_settings.DEFAULT_FILE_STORAGE
+
+AWS_REGION = local_settings.AWS_REGION
+AWS_ACCESS_KEY_ID = local_settings.AWS_ACCESS_KEY_ID
+AWS_S3_SECRET_ACCESS_KEY = local_settings.AWS_S3_SECRET_ACCESS_KEY
+AWS_STORAGE_BUCKET_NAME = local_settings.AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_SECURE_URLS = False       # use http instead of https
+AWS_QUERYSTRING_AUTH = False     # don't add complex authentication-related query parameters for requests
+
+
+

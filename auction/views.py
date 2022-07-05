@@ -10,6 +10,7 @@ from auction.serializers import AuctionBidSerializer
 from auction.models import Auction as AuctionModel
 from auction.models import AuctionComment as AuctionCommentModel
 from auction.models import BookMark as BookMarkModel
+from user.models import User as UserModel
 
 from django.db.models import Q
 
@@ -104,6 +105,12 @@ class AuctionCommentView(APIView):
         request.data["user"] = user.id
         auction = AuctionModel.objects.get(id=id)
         request.data["auction"] = auction.id
+        
+        #댓글 달면 point 2만
+        user_obj = UserModel.objects.get(id=user.id)
+        user_obj.point = user_obj.point + 20000
+        user_obj.save()
+        
         comment_serializer = AuctionCommentSerializer(data=request.data, context={"request": request})
         if comment_serializer.is_valid():
             comment_serializer.save()

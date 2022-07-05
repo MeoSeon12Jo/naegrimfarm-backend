@@ -7,8 +7,30 @@ from user.models import User as UserModel
 from rest_framework import permissions
 from rest_framework import status
 from django.db.models import Q
-
+import cv2
+import numpy as np
 from django.utils import timezone
+
+
+def transform(img, net):
+    h, w, c = img.shape
+    img = cv2.resize(img, dsize=(500, int(h / w * 500)))
+    print(img.shape)
+
+    MEAN_VALUE = [103.939, 116.779, 123.680]
+    blob = cv2.dnn.blobFromImage(img, mean=MEAN_VALUE)
+
+    print(blob.shape) # (1, 3, 325, 500)
+    net.setInput(blob)
+    output = net.forward()
+
+    output = output.squeeze().transpose((1, 2, 0))
+    output += MEAN_VALUE
+
+    output = np.clip(output, 0, 255)
+    output = output.astype('uint8')
+
+    return output
 
 
 class PaintingView(APIView):
@@ -20,6 +42,8 @@ class PaintingView(APIView):
         request.data["user"] = user.id
         painting_serializer = PaintingSerializer(data=request.data, context={"request": request})
         if painting_serializer.is_valid():
+            painting_serializer['image']=transform(painting_serializer['image'], cv2.dnn.readNetFromTorch('composition_vii.t7'))
+            print(painting_serializer)
             painting_serializer.save()
             return Response(painting_serializer.data, status=status.HTTP_200_OK)
         return Response(painting_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -37,10 +61,11 @@ class GalleryView(APIView):
                 closed_auction.painting.is_auction = False
                 closed_auction.painting.save()
 
-        users = UserModel.objects.filter(~Q(owner_painting=None))
+        users = UserModel.objects.filter(~Q(owner_painting=None) & Q(owner_painting__is_auction=False)).distinct()
+        
         if users.count() != 0:
             user_serializer = UserSerializer(users, many=True).data
-            user_serializer.sort(key=lambda x: -len(x['paintings_list']))
+            user_serializer.sort(key=lambda x: -len(x['paintings_image']))
 
             return Response(user_serializer, status=status.HTTP_200_OK)
         else:
@@ -57,4 +82,3 @@ class UserGalleryView(APIView):
         painting_serializer = PaintingSerializer(paintings, many=True).data
 
         return Response(painting_serializer, status=status.HTTP_200_OK)
-

@@ -52,6 +52,7 @@ class AuctionSerializer(serializers.ModelSerializer):
 class AuctionCommentSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
     create_time = serializers.SerializerMethodField()
+    user_point = serializers.SerializerMethodField()
     
     def get_username(self, obj):
         return obj.user.nickname
@@ -60,6 +61,10 @@ class AuctionCommentSerializer(serializers.ModelSerializer):
         #JS에서 댓글 시간 표현방식 사용하기 위해 포멧
         create_time = obj.created_at.replace(microsecond=0).isoformat()
         return create_time
+    
+    def get_user_point(self, obj):
+        user = self.context.get("request").user
+        return format(int(user.point or 0), ',')
     
     def create(self, validated_data):
         comment = AuctionCommentModel(**validated_data)
@@ -77,7 +82,7 @@ class AuctionCommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = AuctionCommentModel
-        fields = ["id","user", "auction", "username", "content", "created_at", "create_time"]
+        fields = ["id","user", "auction", "username", "content", "created_at", "create_time", "user_point"]
 
     
 class AuctionDetailSerializer(serializers.ModelSerializer):
@@ -89,6 +94,7 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
     end_date = serializers.SerializerMethodField()
     is_bookmark = serializers.SerializerMethodField()
     request_username = serializers.SerializerMethodField()
+    user_point = serializers.SerializerMethodField()
     
     def get_start_bid(self, obj):
         #포맷 메소드로 숫자를 , 로 분리!
@@ -100,17 +106,18 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
 
     def get_time_left(self, obj):
         #timedelta형식의 시간을 원하는 형태로 바꾸는 로직
-        
         time_remaining = obj.auction_end_date - timezone.now()
         time_string = str(time_remaining)
+        print(time_string)
         
-        if 'days' not in time_string:
+        if 'day' not in time_string:
             time_string = '0 days, ' + time_string
         
         time_string = time_string.split(",")
         
         days = time_string[0]
         days = days[:-5]
+        
         
         times = time_string[1]
         times = times[1:]
@@ -123,14 +130,14 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
         
         return time_remaining
     
+    
     def get_end_date(self, obj):
         #datetime 을 JS에서 Date()메소드에서 사용 할 수 있는 형태로 변경
         end_time = str(obj.auction_end_date)
         time_list = end_time.split("+")[0]
-        end_date = time_list.split(" ")[1]
   
         
-        return end_date
+        return time_list
     
     def get_is_bookmark(self, obj):
         user = self.context.get("request").user
@@ -143,18 +150,27 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
     def get_request_username(self, obj):
         user = self.context.get("request").user
         return user.nickname
+    
+    def get_user_point(self, obj):
+        user = self.context.get("request").user
+        return format(int(user.point or 0), ',')
      
     class Meta:
         model = AuctionModel
         fields = ["id","request_username", "start_bid", "current_bid", "time_left",
-                  "end_date", "bidder", "comments", "painting", "is_bookmark"]
+                  "end_date", "bidder", "comments", "painting", "is_bookmark", "user_point"]
     
         
 class AuctionBidSerializer(serializers.ModelSerializer):
     current_bid_format = serializers.SerializerMethodField()
+    user_point = serializers.SerializerMethodField()
     
     def get_current_bid_format(self, obj):
         return format(obj.current_bid, ',')
+    
+    def get_user_point(self, obj):
+        user = self.context.get("request").user
+        return format(int(user.point or 0), ',')
     
     
     def validate(self, data):
@@ -212,5 +228,5 @@ class AuctionBidSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = AuctionModel
-        fields = ["id","current_bid", "bidder", "current_bid_format"]
+        fields = ["id","current_bid", "bidder", "current_bid_format", "user_point"]
         
