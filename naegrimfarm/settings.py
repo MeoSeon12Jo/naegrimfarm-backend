@@ -61,6 +61,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5500',
     'https://sage-flan-a5e03e.netlify.app',
+    'https://neon-queijadas-c23bce.netlify.app',
     'http://3.39.193.83',
 ]
 
@@ -91,6 +92,7 @@ CORS_ALLOW_HEADERS = [
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:5500',
     'https://sage-flan-a5e03e.netlify.app',
+    'https://neon-queijadas-c23bce.netlify.app',
     'http://3.39.193.83',
 ]
 
@@ -176,6 +178,7 @@ AUTH_USER_MODEL = 'user.User'
 # CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ["http://127.0.0.1:5500", 
                          "https://sage-flan-a5e03e.netlify.app",
+                         'https://neon-queijadas-c23bce.netlify.app',
                          'http://3.39.193.83',
                          ]
 CORS_ALLOW_CREDENTIALS = True
