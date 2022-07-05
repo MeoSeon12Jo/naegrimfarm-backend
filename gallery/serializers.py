@@ -82,8 +82,26 @@ class PaintingSerializer(serializers.ModelSerializer):
 
     def get_auction(self, obj):
         auction = AuctionModel.objects.filter(painting=obj.id).values()
-
         return auction
+        
+    def create(self, validated_data):
+        painting = PaintingModel(**validated_data)
+        painting.save()
+
+        return painting
+
+    class Meta:
+        model = PaintingModel
+        fields = ["id", "title", "description", "image",
+        "is_auction", "artist", "owner", "category", "auction"]
+
+
+
+class PaintingUploadSerializer(serializers.ModelSerializer):
+
+    
+    def validate(self, data):
+        return data
 
     def create(self, validated_data):
         painting = PaintingModel(**validated_data)
@@ -91,8 +109,7 @@ class PaintingSerializer(serializers.ModelSerializer):
 
         return painting
 
-
     class Meta:
         model = PaintingModel
         fields = ["id", "title", "description", "image",
-        "is_auction", "artist", "owner", "category", "auction"]
+        "is_auction", "artist", "owner", "category"]

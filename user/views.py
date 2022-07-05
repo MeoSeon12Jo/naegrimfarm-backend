@@ -60,7 +60,7 @@ class OnlyAuthenticatedUserView(APIView):
     authentication_classes = [JWTAuthentication]
 
     def get(self, request):
-				# Token에서 인증된 user만 가져온다.
+		# Token에서 인증된 user만 가져온다.
         user = request.user
         print(f"user 정보 : {user}")
         if not user:

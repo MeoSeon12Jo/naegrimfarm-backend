@@ -3,7 +3,7 @@ from user.models import User as UserModel
 from auction.models import Painting as PaintingModel
 from auction.models import Auction as AuctionModel
 from auction.models import BookMark as BookMarkModel
-# from datetime import datetime
+from django.forms.models import model_to_dict
 
 
 class BookmarkSerializer(serializers.ModelSerializer):
@@ -15,9 +15,16 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
 class PaintingSerializer(serializers.ModelSerializer):
 
+    auction = serializers.SerializerMethodField()
+
+    def get_auction(self, obj):
+        if obj.is_auction == True:
+            auction = model_to_dict(obj.auction)
+            return auction
+
     class Meta:
         model = PaintingModel
-        fields = "__all__"
+        fields = ["id", "artist", "image", "is_auction", "owner", "title", "auction"]
 
 
 class AucionSerializer(serializers.ModelSerializer):
