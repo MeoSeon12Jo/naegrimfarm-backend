@@ -106,28 +106,29 @@ class AuctionDetailSerializer(serializers.ModelSerializer):
 
     def get_time_left(self, obj):
         #timedelta형식의 시간을 원하는 형태로 바꾸는 로직
+
         time_remaining = obj.auction_end_date - timezone.now()
         time_string = str(time_remaining)
-        print(time_string)
         
-        if 'day' not in time_string:
+        if 'day' in time_string and 'days' not in time_string:
+            time_string = time_string.replace('day', 'days')
+        
+        elif 'days' not in time_string:
             time_string = '0 days, ' + time_string
-        
+
         time_string = time_string.split(",")
-        
+
         days = time_string[0]
         days = days[:-5]
-        
-        
+
         times = time_string[1]
         times = times[1:]
         times = times.split(":")
-        
+
         hours = times[0]
         minutes = times[1]
-        
+
         time_remaining = f"{days}일 {hours}시간 {minutes}분"
-        
         return time_remaining
     
     
