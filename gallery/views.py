@@ -16,6 +16,7 @@ from PIL import Image
 from django.utils import timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.forms.models import model_to_dict
+import random
 
 
 def transform(img, net):
@@ -67,7 +68,9 @@ class PaintingView(APIView):
     def post(self, request):
         user = request.user
         category = CategoryModel.objects.get(name=request.data["category"])
-        output_io = transform(request.data['image'], net=cv2.dnn.readNetFromTorch('gallery/composition_vii.t7'))
+        model_list = ['gallery/composition_vii.t7', 'gallery/candy.t7', 'gallery/feathers.t7', 'gallery/la_muse.t7', 'gallery/masaic.t7', 'gallery/starry_night.t7', 'gallery/the_scream.t7', 'gallery/the_wave.t7', 'gallery/udnie.t7']
+        random.shuffle(model_list)
+        output_io = transform(request.data['image'], net=cv2.dnn.readNetFromTorch(model_list[0]))
         
         new_pic= InMemoryUploadedFile(output_io, 'ImageField','output','JPEG', sys.getsizeof(output_io), None)
         
