@@ -18,7 +18,7 @@ class MyPageView(APIView):
 
         paintings_serializer = PaintingSerializer(paintings, many=True).data
         auctions_serializer = AucionSerializer(auctions, many=True).data
-
+        
         return Response(
             {
                 'paintings_serializer': paintings_serializer,
