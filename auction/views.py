@@ -3,8 +3,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework import status
-
 from auction.serializers import AuctionCommentSerializer, AuctionDetailSerializer, AuctionCreateSerializer
+from user.models import User as UserModel
+
 from auction.serializers import AuctionSerializer
 from auction.serializers import AuctionBidSerializer
 from auction.models import Auction as AuctionModel, Painting as PaintingModel
@@ -24,6 +25,9 @@ class AuctionView(APIView):
 
     #DONE 경매리스트 정보
     def get(self, request):
+        user = request.user
+        user_point = UserModel.objects.get(id=user.id).point
+
         # 카테고리명 Query Parameter로 가져오기
         category_name = request.GET.get('category', None)
 
@@ -58,7 +62,8 @@ class AuctionView(APIView):
         auctions = {
             'closing_auctions': closing_auction_serializer,
             'hot_auctions': hot_auction_serializer,
-            'nobid_auctions': nobid_auction_serializer
+            'nobid_auctions': nobid_auction_serializer,
+            'user_point': user_point
         }
 
         return Response(auctions, status=status.HTTP_200_OK)

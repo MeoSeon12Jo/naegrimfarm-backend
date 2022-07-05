@@ -17,6 +17,7 @@ from PIL import Image
 from django.utils import timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.forms.models import model_to_dict
+import random
 
 
 def transform(img, net):
@@ -58,7 +59,9 @@ class PaintingView(APIView):
         user = request.user
         now = datetime.now()
         category = CategoryModel.objects.get(name=request.data["category"])
-        output_io = transform(request.data['image'], net=cv2.dnn.readNetFromTorch('gallery/composition_vii.t7'))
+        model_list = ['gallery/composition_vii.t7', 'gallery/candy.t7', 'gallery/feathers.t7', 'gallery/la_muse.t7', 'gallery/masaic.t7', 'gallery/starry_night.t7', 'gallery/the_scream.t7', 'gallery/the_wave.t7', 'gallery/udnie.t7']
+        random.shuffle(model_list)
+        output_io = transform(request.data['image'], net=cv2.dnn.readNetFromTorch(model_list[0]))
         
         new_pic= InMemoryUploadedFile(output_io, 'ImageField',f"{user.nickname}:{now}",'JPEG', sys.getsizeof(output_io), None)
         
@@ -81,6 +84,9 @@ class GalleryView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
+        user = request.user
+        my_point = UserModel.objects.get(id=user.id).point
+
         closed_auctions = AuctionModel.objects.filter(Q(auction_end_date__lte=timezone.now()))
 
         for closed_auction in closed_auctions:
@@ -95,7 +101,7 @@ class GalleryView(APIView):
             user_serializer = UserSerializer(users, many=True).data
             user_serializer.sort(key=lambda x: -len(x['paintings_image']))
 
-            return Response(user_serializer, status=status.HTTP_200_OK)
+            return Response({'user_serializer': user_serializer, 'my_point': my_point}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -104,9 +110,11 @@ class UserGalleryView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, nickname):
+        user = request.user
+        my_point = UserModel.objects.get(id=user.id).point
 
         user_id = UserModel.objects.get(nickname=nickname).id
         paintings = PaintingModel.objects.filter(owner=user_id, is_auction=False).order_by('-auction__current_bid')
         painting_serializer = PaintingSerializer(paintings, many=True).data
 
-        return Response(painting_serializer, status=status.HTTP_200_OK)
+        return Response({'painting_serializer': painting_serializer, 'my_point': my_point}, status=status.HTTP_200_OK)
