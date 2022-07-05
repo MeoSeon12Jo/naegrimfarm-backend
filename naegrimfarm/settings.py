@@ -60,9 +60,8 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5500',
-    'http://127.0.0.1:5555',
-
-
+    'https://sage-flan-a5e03e.netlify.app',
+    'http://3.39.193.83',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -91,9 +90,9 @@ CORS_ALLOW_HEADERS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:5500',
-    'http://127.0.0.1:5555',
-
-    ]
+    'https://sage-flan-a5e03e.netlify.app',
+    'http://3.39.193.83',
+]
 
 ROOT_URLCONF = 'naegrimfarm.urls'
 
@@ -156,7 +155,14 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
+STATIC_URL = '/static/'
+
+
+ALLOWED_HOSTS = [
+	'3.39.193.83',
+    '0'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -168,7 +174,10 @@ AUTH_USER_MODEL = 'user.User'
 
 # CORS 관련 추가
 # CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = ["http://127.0.0.1:5500"]
+CORS_ORIGIN_WHITELIST = ["http://127.0.0.1:5500", 
+                         "https://sage-flan-a5e03e.netlify.app",
+                         'http://3.39.193.83',
+                         ]
 CORS_ALLOW_CREDENTIALS = True
 
 
