@@ -47,6 +47,18 @@ class AuctionSerializer(serializers.ModelSerializer):
         model = AuctionModel
         fields = ['id', 'start_bid', 'current_bid', 'auction_start_date', 
                         'auction_end_date', 'bidder', 'painting']
+
+
+class AuctionCreateSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        auction = AuctionModel(**validated_data)
+        auction.save()
+        return auction
+    class Meta:
+        model = AuctionModel
+        fields = ['id', 'start_bid', 'current_bid', 'auction_start_date', 
+                        'auction_end_date', 'bidder', 'painting']
     
     
 class AuctionCommentSerializer(serializers.ModelSerializer):
