@@ -66,3 +66,15 @@ class OnlyAuthenticatedUserView(APIView):
         if not user:
             return Response({"error": "접근 권한이 없습니다."}, status=status.HTTP_401_UNAUTHORIZED)
         return Response({"message": "Accepted"})
+
+
+class UserPointView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    #DONE 경매리스트 정보
+    def get(self, request):
+        user = request.user
+        my_point = UserModel.objects.get(id=user.id).point
+
+        return Response({'my_point': my_point}, status=status.HTTP_200_OK)
