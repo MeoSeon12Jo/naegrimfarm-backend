@@ -53,6 +53,9 @@ class GalleryView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
+        user = request.user
+        my_point = UserModel.objects.get(id=user.id).point
+
         closed_auctions = AuctionModel.objects.filter(Q(auction_end_date__lte=timezone.now()))
 
         for closed_auction in closed_auctions:
@@ -67,7 +70,7 @@ class GalleryView(APIView):
             user_serializer = UserSerializer(users, many=True).data
             user_serializer.sort(key=lambda x: -len(x['paintings_image']))
 
-            return Response(user_serializer, status=status.HTTP_200_OK)
+            return Response({'user_serializer': user_serializer, 'my_point': my_point}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -76,9 +79,11 @@ class UserGalleryView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, nickname):
+        user = request.user
+        my_point = UserModel.objects.get(id=user.id).point
 
         user_id = UserModel.objects.get(nickname=nickname).id
         paintings = PaintingModel.objects.filter(owner=user_id, is_auction=False).order_by('-auction__current_bid')
         painting_serializer = PaintingSerializer(paintings, many=True).data
 
-        return Response(painting_serializer, status=status.HTTP_200_OK)
+        return Response({'painting_serializer': painting_serializer, 'my_point': my_point}, status=status.HTTP_200_OK)
