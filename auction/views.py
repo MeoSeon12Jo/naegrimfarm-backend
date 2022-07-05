@@ -4,10 +4,10 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework import status
 
-from auction.serializers import AuctionCommentSerializer, AuctionDetailSerializer
+from auction.serializers import AuctionCommentSerializer, AuctionDetailSerializer, AuctionCreateSerializer
 from auction.serializers import AuctionSerializer
 from auction.serializers import AuctionBidSerializer
-from auction.models import Auction as AuctionModel
+from auction.models import Auction as AuctionModel, Painting as PaintingModel
 from auction.models import AuctionComment as AuctionCommentModel
 from auction.models import BookMark as BookMarkModel
 from user.models import User as UserModel
@@ -64,7 +64,7 @@ class AuctionView(APIView):
         return Response(auctions, status=status.HTTP_200_OK)
     
     def post(self, request):
-        auction_serializer = AuctionSerializer(data=request.data)
+        auction_serializer = AuctionCreateSerializer(data=request.data)
         
         if auction_serializer.is_valid():
             auction_serializer.save()

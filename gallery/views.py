@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -21,19 +22,14 @@ from django.forms.models import model_to_dict
 def transform(img, net):
     #img를 boundfield로 읽는다.
     data = img.read()
-    
     #인코딩
     encoded_img = np.fromstring(data, dtype = np.uint8)
-    
     #다시 디코딩
     img = cv2.imdecode(encoded_img, cv2.IMREAD_COLOR)
-    
     #어떤 모양인지 shape
     h, w, c = img.shape
-    
     #500x500으로 크기조정
     img = cv2.resize(img, dsize=(500, int(h / w * 500)))
-
     #모델: 명화로 바꾸는 부분
     MEAN_VALUE = [103.939, 116.779, 123.680]
     blob = cv2.dnn.blobFromImage(img, mean=MEAN_VALUE)
@@ -41,20 +37,14 @@ def transform(img, net):
     
     #어떤 명화로 바꿀지
     net.setInput(blob)
-    
     output = net.forward()
-    
     #아웃풋 크기 조정
     output = output.squeeze().transpose((1, 2, 0))
     output += MEAN_VALUE
-    
     #크기에 맞게 자르고 type을 바꿔줌!
     output = np.clip(output, 0, 255)
     output = output.astype('uint8')
-    # cv2.imwrite('color_img.jpg', output)
-    # opencv_image=cv2.cvtColor(output, cv2.COLOR_RGB2BGR)
-    # cv2.imwrite(opencv_image, 'output.')
-    # opencv_image.save('output.jpg')
+    
     output = Image.fromarray(output)
     output_io = io.BytesIO()
     output.save(output_io, format="JPEG")
@@ -66,10 +56,11 @@ class PaintingView(APIView):
 
     def post(self, request):
         user = request.user
+        now = datetime.now()
         category = CategoryModel.objects.get(name=request.data["category"])
         output_io = transform(request.data['image'], net=cv2.dnn.readNetFromTorch('gallery/composition_vii.t7'))
         
-        new_pic= InMemoryUploadedFile(output_io, 'ImageField','output','JPEG', sys.getsizeof(output_io), None)
+        new_pic= InMemoryUploadedFile(output_io, 'ImageField',f"{user.nickname}:{now}",'JPEG', sys.getsizeof(output_io), None)
         
         create_paintings = PaintingModel.objects.create(
             title=request.data["title"],
