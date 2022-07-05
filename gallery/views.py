@@ -87,7 +87,7 @@ class GalleryView(APIView):
         user = request.user
         my_point = UserModel.objects.get(id=user.id).point
 
-        closed_auctions = AuctionModel.objects.filter(Q(auction_end_date__lte=timezone.now()))
+        closed_auctions = AuctionModel.objects.filter(Q(auction_end_date__lte=timezone.now()) & Q(painting__is_auction=True))
 
         for closed_auction in closed_auctions:
             if closed_auction.bidder:
