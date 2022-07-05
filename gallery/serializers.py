@@ -96,3 +96,22 @@ class PaintingSerializer(serializers.ModelSerializer):
         model = PaintingModel
         fields = ["id", "title", "description", "image",
         "is_auction", "artist", "owner", "category", "auction"]
+
+
+
+class PaintingUploadSerializer(serializers.ModelSerializer):
+
+    
+    def validate(self, data):
+        return data
+
+    def create(self, validated_data):
+        painting = PaintingModel(**validated_data)
+        painting.save()
+
+        return painting
+
+    class Meta:
+        model = PaintingModel
+        fields = ["id", "title", "description", "image",
+        "is_auction", "artist", "owner", "category"]
