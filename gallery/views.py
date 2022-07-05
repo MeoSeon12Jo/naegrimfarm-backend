@@ -2,7 +2,7 @@ from datetime import datetime
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializer, PaintingSerializer, PaintingUploadSerializer
+from .serializers import UserSerializer, PaintingSerializer
 from auction.models import Category as CategoryModel, Painting as PaintingModel
 from auction.models import Auction as AuctionModel
 from user.models import User as UserModel
@@ -16,6 +16,7 @@ import io
 from PIL import Image
 from django.utils import timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.forms.models import model_to_dict
 import random
 
@@ -34,7 +35,6 @@ def transform(img, net):
     #모델: 명화로 바꾸는 부분
     MEAN_VALUE = [103.939, 116.779, 123.680]
     blob = cv2.dnn.blobFromImage(img, mean=MEAN_VALUE)
-    # print(blob.shape) # (1, 3, 325, 500)
     
     #어떤 명화로 바꿀지
     net.setInput(blob)
@@ -52,8 +52,8 @@ def transform(img, net):
     return output_io
 
 class PaintingView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def post(self, request):
         user = request.user
@@ -91,9 +91,12 @@ class GalleryView(APIView):
 
         for closed_auction in closed_auctions:
             if closed_auction.bidder:
-                closed_auction.painting.owner_id = closed_auction.bidder_id
-                closed_auction.painting.is_auction = False
-                closed_auction.painting.save()
+                painting = closed_auction.painting
+                painting.owner_id = closed_auction.bidder_id
+                painting.is_auction = False
+                painting.artist.point += closed_auction.current_bid
+                painting.artist.save()
+                painting.save()
 
         users = UserModel.objects.filter(~Q(owner_painting=None) & Q(owner_painting__is_auction=False)).distinct()
         

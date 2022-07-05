@@ -11,12 +11,11 @@ from auction.serializers import AuctionBidSerializer
 from auction.models import Auction as AuctionModel, Painting as PaintingModel
 from auction.models import AuctionComment as AuctionCommentModel
 from auction.models import BookMark as BookMarkModel
-from user.models import User as UserModel
 
 from django.db.models import Q
 
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import timedelta
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class AuctionView(APIView):

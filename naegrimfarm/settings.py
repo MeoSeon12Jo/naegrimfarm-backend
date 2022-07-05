@@ -26,7 +26,7 @@ SECRET_KEY = local_settings.SECRET['secret']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -163,7 +163,8 @@ STATIC_URL = '/static/'
 
 ALLOWED_HOSTS = [
 	'3.39.193.83',
-    '0'
+    '0',
+    '127.0.0.1'
 ]
 
 # Default primary key field type

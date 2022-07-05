@@ -50,22 +50,7 @@ class FarmTokenObtainPairView(TokenObtainPairView):
     permission_classes = [permissions.AllowAny]
     #serializer_class 변수에 커스터마이징 된 시리얼라이저를 넣어 준다!
     serializer_class = FarmTokenObtainPairSerializer
-    
-    
-# 인가된 사용자만 접근할 수 있는 View 생성
-class OnlyAuthenticatedUserView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-		
-    # JWT 인증방식 클래스 지정하기
-    authentication_classes = [JWTAuthentication]
 
-    def get(self, request):
-		# Token에서 인증된 user만 가져온다.
-        user = request.user
-        print(f"user 정보 : {user}")
-        if not user:
-            return Response({"error": "접근 권한이 없습니다."}, status=status.HTTP_401_UNAUTHORIZED)
-        return Response({"message": "Accepted"})
 
 
 class UserPointView(APIView):

@@ -1,7 +1,5 @@
-from django import urls
 from rest_framework import serializers
 from user.models import User as UserModel
-from auction.models import Category as CategoryModel
 from auction.models import Painting as PaintingModel
 from auction.models import Auction as AuctionModel
 
@@ -44,18 +42,7 @@ class PaintingDetailSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    
-    # paintings_list = serializers.SerializerMethodField()
     paintings_image = serializers.SerializerMethodField()
-
-    # def get_paintings_list(self, obj):
-    #     paintings_set = PaintingModel.objects.filter(owner=obj.id).values()
-    #     # print(paintings_set)
-    #     paintings_list = []
-    #     for paintings in paintings_set:
-    #         if paintings.get('is_auction') == False:
-    #             paintings_list.append(paintings)
-    #     return paintings_list
     
     def get_paintings_image(self, obj):
         paintings_set = PaintingModel.objects.filter(owner=obj.id)

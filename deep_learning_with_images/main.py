@@ -6,12 +6,12 @@ import numpy as np
 def transform(img, net=cv2.dnn.readNetFromTorch('models/eccv16/composition_vii.t7')):
     h, w, c = img.shape
     img = cv2.resize(img, dsize=(500, int(h / w * 500)))
-    print(img.shape) # (325, 500, 3)
+    # (325, 500, 3)
 
     MEAN_VALUE = [103.939, 116.779, 123.680]
     blob = cv2.dnn.blobFromImage(img, mean=MEAN_VALUE)
 
-    print(blob.shape) # (1, 3, 325, 500)
+    # (1, 3, 325, 500)
     net.setInput(blob)
     output = net.forward()
 
