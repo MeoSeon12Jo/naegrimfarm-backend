@@ -1,4 +1,3 @@
-from email.policy import HTTP
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from auction.models import BookMark as BookMarkModel
@@ -7,7 +6,6 @@ from auction.models import Painting as PaintingModel
 from user.models import User as UserModel
 from .serializers import AucionSerializer, PaintingSerializer
 from rest_framework import status
-from django.db.models import Q
 
 
 class MyPageView(APIView):

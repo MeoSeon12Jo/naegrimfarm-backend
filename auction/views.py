@@ -1,4 +1,3 @@
-from multiprocessing import context
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -8,7 +7,7 @@ from user.models import User as UserModel
 
 from auction.serializers import AuctionSerializer
 from auction.serializers import AuctionBidSerializer
-from auction.models import Auction as AuctionModel, Painting as PaintingModel
+from auction.models import Auction as AuctionModel
 from auction.models import AuctionComment as AuctionCommentModel
 from auction.models import BookMark as BookMarkModel
 
@@ -79,7 +78,6 @@ class AuctionView(APIView):
 
 
 class AuctionDetailView(APIView):
-    #커스텀 퍼미션 필요
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     
@@ -89,7 +87,7 @@ class AuctionDetailView(APIView):
         auction = AuctionModel.objects.get(id=id)
         
         if auction.auction_end_date > timezone.now():
-            #마감날짜가 지나지 않았다면 데이터 전송
+            #마감 날짜가 지나지 않았다면 데이터 전송
             auction_serializer = AuctionDetailSerializer(auction, context={"request": request})
         
             return Response(auction_serializer.data, status=status.HTTP_200_OK)
@@ -98,7 +96,7 @@ class AuctionDetailView(APIView):
     
     #DONE 경매상세페이지 입찰
     def put(self, request, id):
-        auction = AuctionModel.objects.get(id=id)       
+        auction = AuctionModel.objects.get(id=id)
         auction_serializer = AuctionBidSerializer(auction, data=request.data, context={"request": request})
         
         if auction_serializer.is_valid():

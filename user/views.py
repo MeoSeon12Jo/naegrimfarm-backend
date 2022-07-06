@@ -16,7 +16,6 @@ class UserView(APIView):
     # def get(self, request):
     #     user = request.user
     #     user_serializer = UserSerializer(user, context={"request": request})
-        
     #     return Response(user_serializer.data, status=status.HTTP_200_OK)
     
     #DONE 회원가입

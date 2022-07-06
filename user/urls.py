@@ -10,5 +10,4 @@ urlpatterns = [
     path('api/farm/token/', FarmTokenObtainPairView.as_view(), name='farm_token'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('userpoint/', UserPointView.as_view()),
-
 ]

@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from user.models import User as UserModel
 from auction.models import Painting as PaintingModel
 from auction.models import Auction as AuctionModel
 from auction.models import BookMark as BookMarkModel
