@@ -39,7 +39,7 @@ AI가 사용자가 업로드한 사진을 유화처럼 만들어주는 프로그
 <br><br><br>
 
 ## 🐲 배포 사이트  
-<a href="http://10taku.site/" target="_blank">NAEGRIMFARM 바로가기</a>  
+<a href="http://naegrimfarm.site/" target="_blank">NAEGRIMFARM 바로가기</a>  
 <br><br><br>
 
 ## 📂 Starting Assignment
@@ -59,4 +59,4 @@ AI가 사용자가 업로드한 사진을 유화처럼 만들어주는 프로그
 <br><br><br>
 
 ## 📢 발표 영상
-<a href="https://www.youtube.com/watch?v=0AprfihRypc&ab_channel=%EB%A1%9C%EC%8A%88">YouTube 바로가기</a>
+<a href="https://www.youtube.com/watch?v=wEweiq_PSL8&ab_channel=%EB%A1%9C%EC%8A%88">YouTube 바로가기</a>
