@@ -40,7 +40,7 @@ class AuctionView(APIView):
         nobid_query = (Q(current_bid=None) & Q(bidder=None))
 
         closing_auctions = open_auctions.filter(closing_query).order_by('auction_end_date')
-        hot_auctions = open_auctions.order_by('-current_bid')
+        hot_auctions = open_auctions.filter(~Q(current_bid=None)).order_by('-current_bid')
         nobid_auctions = open_auctions.filter(nobid_query)
 
         # 카테고리 버튼 누를시 카테고리 쿼리 추가
@@ -50,7 +50,7 @@ class AuctionView(APIView):
             nobid_query = nobid_query.add((category_query), nobid_query.AND)
             
             closing_auctions = open_auctions.filter(closing_query).order_by('auction_end_date')
-            hot_auctions = open_auctions.filter(category_query).order_by('-current_bid')
+            hot_auctions = open_auctions.filter(category_query & ~Q(current_bid=None)).order_by('-current_bid')
             nobid_auctions = open_auctions.filter(nobid_query)
 
         # 딕셔너리에 시이럴라이저화된 데이터 담아주기    
